@@ -1,0 +1,116 @@
+.movie-info-page{
+    min-height: calc(100vh - 190px);
+}
+.movie-all{
+    margin: 0 auto 20px;
+    width: 50%;
+    background-color: #FFFFFF;
+    padding: 20px;
+    box-shadow: 0 0 7px 1px #757575;
+    height: 100%;
+    transition: 1s;
+}
+.movie-all-poster{
+    right: auto;
+    left: auto;
+    z-index: 1
+}
+.movie-all img{
+    width: 100%;
+}
+.movie-all-info{
+    display: flex;
+    position: relative;
+    transition: 1s;
+}
+.movie-all-info p{
+    margin: 5px 0
+}
+.movie-all-details{
+    padding: 20px 10px 0 40px ;
+}
+.movie-all-ratings p{
+    margin: 0;
+}
+.movie-all-ratings{
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    margin-top: 20px;
+}
+.movie-info-rating{
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+
+}
+.movie-all-genres{
+    display: flex;
+    justify-content: space-between;
+}
+.movie-all-genres p{
+    flex: 50%
+}
+.movie-all-added-info{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.movie-all-added-info p{
+    flex: 50%;
+    justify-content: end;
+}
+.movie-all-genres{
+    display: flex;
+    justify-content: space-between;
+}
+.movie-all-original{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.movie-all-original p{
+    flex: 50%;
+    justify-content: end;
+}
+.movie-all-description{
+    margin-top: 20px;
+}
+
+
+@media screen and (max-width: 1000px) {
+    .movie-all{
+        width: 80%;
+    }
+}
+@media screen and (max-width: 750px) {
+    .movie-all-info{
+        display: block;
+    }
+    .movie-all-details{
+        padding: 0 20px 20px;
+    }
+}
+@media screen and (max-width: 400px){
+    .movie-all-genres{
+        display: block;
+    }
+    .movie-all-added-info{
+        display: block;
+    }
+    .movie-all-original{
+        display: block;
+    }
+    .movie-all-genres .info-title{
+        font-weight:bold;
+        padding: 10px 0 0;
+    }
+    .movie-all-added-info .info-title{
+        font-weight:bold;
+        padding: 10px 0 0;
+    }
+    .movie-all-original .info-title{
+        font-weight:bold;
+        padding: 10px 0 0;
+    }
+}
