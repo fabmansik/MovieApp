@@ -37,6 +37,7 @@
     justify-content: center;
     font-size: 25px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 .movie-info-rating{
     margin-left: 5px;
