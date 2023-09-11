@@ -13,24 +13,25 @@ export const MoviesListComponent = () => {
     const [getInfo, setGetInfo] = useState<IMovieResponse<IMovieList[]>>(null)
     const [genres, setGenres] = useState([])
     let page = useParams()
-    const info = useAppSelector(state => state.movies)
+    const {movies} = useAppSelector(state => state)
     const dispatch = useAppDispatch()
+    console.log(movies)
     useEffect(()=>{
         (((Object.keys(page).length === 0 && Object.keys(page).length <= 1) || page.page === '0' ) ?
-            dispatch(movieActions.getMovies()):
+            dispatch(movieActions.getMovies())
+            :
             ApiServices.AxiosGetMoviesExactPage(setMoviesList, setGetInfo, page.page))
         ApiServices.AxiosGetGenres(setGenres)
-        setGetInfo(info)
+        setGetInfo(movies)
         }, [page])
-
     return(
-        <PageContext.Provider value={useAppSelector(state => state.movies.page)}>
+        <PageContext.Provider value={movies.page}>
             <ScrollRestoration />
             <GenresContext.Provider value={genres}>
                 <div className='movie-list'>
                     {
-                        moviesList !== null?
-                        moviesList.map(movie=><MoviesListCardComponent key={movie.id} movie={movie}/>):
+                        movies.results !== null?
+                        movies.results.map(movie=><MoviesListCardComponent key={movie.id} movie={movie}/>):
                         <p>Loading...</p>}
                 </div>
                 <div className='page-info'>

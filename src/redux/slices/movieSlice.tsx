@@ -12,7 +12,6 @@ const initialState:IMovieResponse<IMovieList[]> = {
 }
 const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, void>(
     'movieSlice/getMovies',
-    //@ts-ignore
     async (_,{rejectWithValue}) =>{
         try {
             const {data} = await ApiServices.AxiosGetMovies()
@@ -26,11 +25,11 @@ const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, void>(
 )
 const movieSlice = createSlice({
     name: 'movieSlice',
-    initialState,
+    initialState:initialState,
     reducers:{},
     extraReducers: builder => builder
         .addCase(getMovies.fulfilled, (state, action)=>{
-            state = action.payload
+            state.results = action.payload.results
         })
 })
 const {reducer: movieReducer, actions} = movieSlice
