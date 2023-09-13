@@ -3,19 +3,30 @@ header.dark{
     background-color: #0f0f0f;
     transition: 1s;
 }
+.top-header.dark{
+    background-color: #0f0f0f;
+    transition: 1s;
+}
+.low-header.dark{
+    background-color: #0a0a0a;
+    transition: 1s;
+}
 .menu-img.dark{
     background-color: #202121;
     transition: 1s;
     border: 1px solid black;
 }
 .search.dark input{
-    border: solid 1px black;
-    background-color: #202121;
+    background-color: #0a0a0a;
     color: darkgrey;
     transition: 1s;
 }
+.search.dark input:hover{
+    background-color: #0a0a0a;
+    transition: 1s;
+}
 .search.dark{
-    background-color: #0f0f0f;
+    background-color: #0a0a0a;
     transition: 1s;
 }
 .account.dark{
@@ -68,7 +79,10 @@ header.dark{
 .pop-up-menu.shown.dark{
     background-color: #0f0f0f;
     transition: 1s;
-}
+}.pop-up-menu.hidden.dark{
+     background-color: #0f0f0f;
+     transition: 1s;
+ }
 .pop-up-menu.shown.dark .find-element{
     border-bottom: 1px solid #202121;
     transition: 1s;
@@ -77,12 +91,4 @@ header.dark{
     background-color: #202121;
     transition: 1s;
 }
-.search.dark button{
-    display: flex;
-    position: relative;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #202121;
-    transition: 1s;
-    border: 1px solid black;
-}
+

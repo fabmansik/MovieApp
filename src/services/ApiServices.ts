@@ -1,6 +1,6 @@
 import axios, {AxiosPromise, AxiosResponse} from "axios";
 import React from "react";
-import {IMovieList, IMovieResponse} from "../interfaces/moviesInterfaces";
+import {IGenre, IMovieInfo, IMovieList, IMovieResponse} from "../interfaces/moviesInterfaces";
 const options = {
     method: 'GET',
     headers: {
@@ -10,24 +10,24 @@ const options = {
 }
 type IRes<DATA> = Promise<AxiosResponse<DATA>>
 export const ApiServices = {
-    AxiosGetMovies : () : IRes<IMovieResponse<IMovieList[]>> =>{
-        return axios.get('https://api.themoviedb.org/3/discover/movie',options)
+    AxiosGetMovies : (page:string) : IRes<IMovieResponse<IMovieList[]>> =>{
+        return axios.get(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&${page}&sort_by=popularity.desc`,options)
     },
     //@ts-ignore
     AxiosGetMoviesExactPage : (setMoviesList, setGetInfo, page)=>{
         axios.get(`https://api.themoviedb.org/3/discover/movie?page=${page}`,options).then(res=>{setMoviesList(res.data.results); setGetInfo(res.data)})
     },
-    //@ts-ignore
-    AxiosGetGenres: (setGenres) =>{
-        axios.get('https://api.themoviedb.org/3/genre/movie/list', options).then(res=>{setGenres(res.data.genres)})
+
+    AxiosGetGenres: () : IRes<{genres:IGenre[]}>=>{
+        return axios.get('https://api.themoviedb.org/3/genre/movie/list', options)
     },
     //@ts-ignore
     AxiosSearchMovie: (search, setMovies) =>{
-        axios.get(`https://api.themoviedb.org/3/search/movie?query=${search}`,options).then(res=>setMovies(res.data))
+        axios.get(`https://api.themoviedb.org/3/search/movie?query=${search}`,options).then(res=>setMovies(res.data.results))
     },
-    //@ts-ignore
-    AxiosSearchById: (id, setIdMovie) =>{
-        axios.get(`https://api.themoviedb.org/3/movie/${id}`, options).then(res=>setIdMovie(res.data))
+
+    AxiosSearchById: (id:number) : IRes<IMovieInfo>=>{
+        return axios.get(`https://api.themoviedb.org/3/movie/${id}`, options)
     }
 
 }

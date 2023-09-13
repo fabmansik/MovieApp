@@ -1,21 +1,43 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {IMovieResponse, IMovieList} from "../../interfaces/moviesInterfaces";
+import {createAsyncThunk, createSlice, isFulfilled} from "@reduxjs/toolkit";
+import {IMovieResponse, IMovieList, IMovieInfo, IGenre} from "../../interfaces/moviesInterfaces";
 import {ApiServices} from "../../services/ApiServices";
-import {AxiosError} from "axios";
+import axios, {AxiosError} from "axios";
 
-
-const initialState:IMovieResponse<IMovieList[]> = {
-    page: null,
-    results: [],
-    total_pages: null,
-    total_results: null
+export interface IMovieState{
+    moviePage: IMovieResponse<IMovieList[]>
+    currentMovie: IMovieInfo
+    isLoading: boolean
+    genres: IGenre[]
 }
-const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, void>(
+const initialState:IMovieState = {
+    moviePage:{
+        page: null,
+        results: [],
+        total_pages: null,
+        total_results: null
+    },
+    currentMovie: null,
+    isLoading:false,
+    genres: []
+}
+const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, string>(
     'movieSlice/getMovies',
-    async (_,{rejectWithValue}) =>{
+    async (page,{rejectWithValue}) =>{
         try {
-            const {data} = await ApiServices.AxiosGetMovies()
-            console.log(data)
+            const {data} = await ApiServices.AxiosGetMovies(page)
+            return data
+        } catch (e) {
+            const err = e as AxiosError
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+
+const getMovieById = createAsyncThunk<IMovieInfo, number>(
+    'movieSlice/getMovieById',
+    async (id,{rejectWithValue}) =>{
+        try {
+            const {data} = await ApiServices.AxiosSearchById(id)
             return data
         } catch (e) {
             const err = e as AxiosError
@@ -25,15 +47,23 @@ const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, void>(
 )
 const movieSlice = createSlice({
     name: 'movieSlice',
-    initialState:initialState,
+    initialState,
     reducers:{},
     extraReducers: builder => builder
         .addCase(getMovies.fulfilled, (state, action)=>{
-            state.results = action.payload.results
+            state.moviePage = action.payload
         })
+        .addCase(getMovieById.pending,(state)=>{
+            state.currentMovie = null
+        })
+        .addCase(getMovieById.fulfilled,(state, action)=>{
+            state.currentMovie = action.payload
+            console.log(action.payload)
+        })
+
 })
 const {reducer: movieReducer, actions} = movieSlice
 const movieActions = {
-    ...actions, getMovies
+    ...actions, getMovies, getMovieById
 }
 export {movieReducer, movieActions}

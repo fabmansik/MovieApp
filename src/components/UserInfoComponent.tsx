@@ -1,8 +1,7 @@
-import {useContext} from "react";
-import {ThemeContext} from "../containers/MoviesPageContainer";
+import {useAppSelector} from "../Hooks/reduxHooks";
 
 export const UserInfoComponent = () => {
-    const {theme} = useContext(ThemeContext)
+    const theme = useAppSelector(state => state.params.theme)
     return(
         <div className={`account ${theme}`}>
             <img className='account-img' src='/accountImg.jpg' alt={'account img'}></img>

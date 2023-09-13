@@ -1,11 +1,15 @@
-import {useContext} from "react";
-import {GenresContext} from "./MoviesListComponent";
 import {GenreBadgeComponent} from "./GenreBadgeComponent";
-export const MovieInfoComponent = ({movie}) => {
-    const genresContext = (useContext(GenresContext))
-    let genres = []
+import {useAppSelector} from "../../Hooks/reduxHooks";
+import {FC, PropsWithChildren} from "react";
+import {IMovieList} from "../../interfaces/moviesInterfaces";
+interface IProps{
+    movie:IMovieList
+}
+export const MovieInfoComponent:FC<PropsWithChildren<IProps>> = ({movie}) => {
+    const genresRedux = useAppSelector(state => state.genres.results)
+    let genres:string[] = []
     movie.genre_ids.map(genre_id=>
-        genresContext.find(genre => genre.id === genre_id ? genres.push(genre.name) :  0)
+        genresRedux.find(genre => genre.id === genre_id ? genres.push(genre.name) :  0)
     )
     return(
         <div className='movie-info'>

@@ -5,8 +5,8 @@ import './styles/MovieInfoPage.css'
 import './styles/DarkTheme.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {MoviesPageContainer} from "./containers/MoviesPageContainer";
-import {MoviesListComponent} from "./components/MoviesListComponent";
-import {MovieInfoPageComponent} from "./components/MovieInfoPageComponent";
+import {MoviesListPage} from "./pages/MoviesListPage";
+import {MovieInfoPage} from "./pages/MovieInfoPage";
 import store from "./redux/store";
 import React from "react";
 import {Provider} from "react-redux";
@@ -22,18 +22,12 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <MoviesListComponent/>,
-                children: [
-                    {
-                        path: '/:page?',
-                        element: <MoviesListComponent/>
-
-                    },
-                ]
+                element: <MoviesListPage/>,
+                children: []
             },
             {
-                path: '/:page/:id',
-                element: <MovieInfoPageComponent/>
+                path: '/:id',
+                element: <MovieInfoPage/>
             }
 
         ]
