@@ -75,3 +75,9 @@ export interface IMovieInfo {
     vote_average: number
     vote_count: number
 }
+export interface IQuerry{
+    theme:string
+    with_genres:number
+    language: string
+    page: number
+}

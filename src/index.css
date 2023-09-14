@@ -16,9 +16,17 @@ html{
   scroll-behavior: smooth;
 }
 .genres.hidden{
+  background-color: transparent;
   height: 0;
   overflow: hidden;
   position: absolute;
+
+}
+.genres p{
+  width: 23.5%;
+}
+.genres p:hover{
+  cursor: pointer;
 }
 .genres.shown{
   top: 84px;
@@ -30,6 +38,7 @@ html{
   overflow: hidden;
   position: absolute;
   background-color:#FFFFFF;
+  padding: 0 40px;
 }
 .language.hidden{
   height: 0;
@@ -46,15 +55,19 @@ html{
   background-color:#FFFFFF;
   left: calc(15% + 65px);
 }
+.language p:hover{
+  cursor: pointer;
+}
 .genres-language .genre-names{
   margin: 5px;
 }
-.la
 .find-element{
   height: 59px;
   transition: 1s;
   border-bottom: 1px solid grey;
   position: relative;
+  display: flex;
+  justify-content: space-between;
 }
 .find-poster{
   height: 50px;
@@ -68,9 +81,11 @@ html{
   padding: 0;
 }
 .find-rating{
-  position: absolute;
-  right: 0;
-  top:10px
+  margin-right:10px ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 #root{

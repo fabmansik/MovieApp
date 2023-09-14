@@ -1,11 +1,15 @@
 import {useAppSelector} from "../Hooks/reduxHooks";
 
 export const UserInfoComponent = () => {
-    const theme = useAppSelector(state => state.params.theme)
+    const {language, theme} = useAppSelector(state => state.params.querryParams)
+    const welcomeText={
+        en:'Welcome Milan',
+        uk:'Вітаю Мілан'
+    }
     return(
         <div className={`account ${theme}`}>
             <img className='account-img' src='/accountImg.jpg' alt={'account img'}></img>
-            <p>Welcome Milan</p>
+            <p>{language==='uk'?welcomeText.uk:welcomeText.en}</p>
         </div>
     )
 }

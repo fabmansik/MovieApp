@@ -1,31 +1,24 @@
 import {ApiServices} from "../services/ApiServices";
 import React, {createContext, useEffect, useState} from "react";
 import {MoviesListCardComponent} from "../components/ListComponents/MoviesListCardComponent";
-import {Link, ScrollRestoration, useParams, useSearchParams} from "react-router-dom";
-import {IMovieList, IMovieResponse} from "../interfaces/moviesInterfaces";
+import {ScrollRestoration, useParams, useSearchParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
 import {movieActions} from "../redux/slices/movieSlice";
-import {genreActions} from "../redux/slices/genreSlice";
 import PaginationComponent from "../components/ListComponents/PaginationComponent";
+import {paramsActions} from "../redux/slices/paramsSlice";
+import qs from "qs";
 
 export const MoviesListPage = () => {
 
     const movies = useAppSelector(state => state.movies.moviePage)
-    const dispatch = useAppDispatch()
+    const {querryParams} = useAppSelector(state => state.params)
     const [querry, setQuerry] = useSearchParams()
-    const searchParams = {
-        include_adult: 'false',
-        include_video: 'false',
-        language: 'en-US',
-        page: '1',
-        sort_by: 'popularity.desc'
-    }
-    console.log(querry.toString())
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
         dispatch(movieActions.getMovies(querry.toString()))
-        // ApiServices.AxiosGetMoviesExactPage(setMoviesList, setGetInfo, page.page))
-        dispatch(genreActions.getGenres())
-    }, [querry.toString()])
+        dispatch(movieActions.getGenres(querry.toString()))
+    }, [querry])
     return (
         <>
             <ScrollRestoration/>

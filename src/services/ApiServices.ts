@@ -11,23 +11,19 @@ const options = {
 type IRes<DATA> = Promise<AxiosResponse<DATA>>
 export const ApiServices = {
     AxiosGetMovies : (page:string) : IRes<IMovieResponse<IMovieList[]>> =>{
-        return axios.get(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&${page}&sort_by=popularity.desc`,options)
-    },
-    //@ts-ignore
-    AxiosGetMoviesExactPage : (setMoviesList, setGetInfo, page)=>{
-        axios.get(`https://api.themoviedb.org/3/discover/movie?page=${page}`,options).then(res=>{setMoviesList(res.data.results); setGetInfo(res.data)})
+        return axios.get(`https://api.themoviedb.org/3/discover/movie?${page}`,options)
     },
 
-    AxiosGetGenres: () : IRes<{genres:IGenre[]}>=>{
-        return axios.get('https://api.themoviedb.org/3/genre/movie/list', options)
+    AxiosGetGenres: (lng:string) : IRes<{genres:IGenre[]}>=>{
+        return axios.get(`https://api.themoviedb.org/3/genre/movie/list?${lng}`, options)
     },
     //@ts-ignore
-    AxiosSearchMovie: (search, setMovies) =>{
-        axios.get(`https://api.themoviedb.org/3/search/movie?query=${search}`,options).then(res=>setMovies(res.data.results))
+    AxiosSearchMovie: (search, setMovies, querry) =>{
+        axios.get(`https://api.themoviedb.org/3/search/movie?query=${search}&language=${querry}`,options).then(res=>setMovies(res.data.results))
     },
 
-    AxiosSearchById: (id:number) : IRes<IMovieInfo>=>{
-        return axios.get(`https://api.themoviedb.org/3/movie/${id}`, options)
+    AxiosSearchById: (id:number, lng:string) : IRes<IMovieInfo>=>{
+        return axios.get(`https://api.themoviedb.org/3/movie/${id}?language=${lng}`, options)
     }
 
 }

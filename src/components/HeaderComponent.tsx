@@ -8,37 +8,52 @@ import {IMovieList} from "../interfaces/moviesInterfaces";
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
 import LanguageComponent from "./LanguageComponent";
 import {paramsActions} from "../redux/slices/paramsSlice";
+import GenresFilterComponent from "./GenresFilterComponent";
+import qs from "qs";
 
 export const HeaderComponent = () => {
     const dispatch = useAppDispatch()
     const params = useParams()
-    const [querry] = useSearchParams()
     const {register, watch} = useForm()
 
-    const {theme, smallerThan750} = useAppSelector(state => state.params)
-    const genres = useAppSelector(state => state.genres.results)
+    const {querryParams} = useAppSelector(state => state.params)
+    const {theme, language, page, with_genres} = querryParams
+    const qr= {...querryParams, page:1, with_genres: 0}
+    console.log(qs.stringify(querryParams))
+    const genres = useAppSelector(state => state.movies.genres)
 
     const [showPop, setShowPop] = useState<string>('hidden')
     const [searchMovies, setSearchMovies] = useState<IMovieList[]>([])
     const [showGenres, setShowGenres] = useState<string>('hidden')
     const [showLanguage, setShowLanguage] = useState<string>('hidden')
     const watchPop = watch('pop-up');
-
-    console.log(Object.keys(genres))
-
-    console.log(params)
     useEffect(() => {
-        dispatch(paramsActions.getTheme())
-        ApiServices.AxiosSearchMovie(watchPop || '', setSearchMovies)
+        ApiServices.AxiosSearchMovie(watchPop || '', setSearchMovies,language)
     }, [watchPop])
-    console.log(searchMovies)
 
-    // @ts-ignore
+
+
+    let genreButton = document.getElementById('genres-button');
+    // genreButton.onmouseenter === true?
+    let genrePop = document.getElementById('genres-pop');
+    // useEffect(()=>{
+    //     if(genreButton.onmouseenter || genrePop.onmouseenter){
+    //         setShowGenres(prevState => {
+    //             if (prevState === 'hidden') {
+    //                 return 'shown'
+    //             } else {
+    //                 return 'hidden'
+    //             }
+    //         })
+    //         setShowLanguage('hidden')
+    //     }else{}
+    // },[genreButton.onmouseenter, genrePop.onmouseenter])
+
     return (
         <header className={theme}>
             <div className={`top-header ${theme}`}>
                 <div className={`menu-img ${theme}`} onClick={() => {
-                    dispatch(paramsActions.changeTheme())
+                    dispatch(paramsActions.setTheme())
                 }}>
                     <div className={`line ${theme}`} style={{marginLeft: `${theme}`, transition: '1s'}}>
                         <img className='light-img' src='/light-bulb.png' alt='light-mode-img'/>
@@ -46,7 +61,8 @@ export const HeaderComponent = () => {
                     </div>
                 </div>
                 <div className='header-imgs'>
-                    <Link to={querry.get('page') !== '1' && params.id ? `/?${querry.toString()}` : `/`}>
+                    {/*@ts-ignore*/}
+                    <Link to={page !== 1 && params.id ? `/?${qs.stringify(querryParams)}` : `/?${qs.stringify(querryParams)}`}>
                         <img className='logo-img' src={`/Logo_${theme}.png`} alt="logo"></img>
                     </Link>
                 </div>
@@ -56,7 +72,8 @@ export const HeaderComponent = () => {
 
             <div className={`low-header ${theme}`}>
                 <div className={`genres-language`}>
-                    <button className={`genres-button`} onClick={() => {
+                    <button className={`genres-button`} id={`genres-button`}
+                            onClick={() => {
                         setShowGenres(prevState => {
                             if (prevState === 'hidden') {
                                 return 'shown'
@@ -65,11 +82,14 @@ export const HeaderComponent = () => {
                             }
                         })
                         setShowLanguage('hidden')
-                    }}>
+                    }}
+                    >
                         Genres
                     </button>
-                    <div className={`genres ${showGenres}`}>
-                        {genres.map(genre => <p className={`genre-names`}>{genre.name}</p>)}
+                    <div className={`genres ${showGenres}`} id={`genres-pop`}>
+                        {genres.map(genre =>
+                            <GenresFilterComponent genre={genre}/>
+                        )}
                     </div>
                     <button className={`language-button`} onClick={() => {
                         setShowLanguage(prevState => {
@@ -83,15 +103,17 @@ export const HeaderComponent = () => {
                     }}>Language
                     </button>
                     <div className={`language ${showLanguage}`}>
-                        <p>English</p>
-                        <p>Українська</p>
+                        <LanguageComponent/>
                     </div>
                 </div>
 
                 <div className={`search ${theme}`}>
                     <img className={`shape-img`} src={`/shape_${theme}.png`} alt='shape'></img>
                     <input type='text' autoComplete={`off`} className={showPop}
-                           placeholder={`Пошук фільмів`} {...register('pop-up')} onFocus={() => setShowPop('shown')}
+                           placeholder={
+                        querryParams.language==='uk'?`Пошук фільмів`:'Find movies'
+                    }
+                           {...register('pop-up')} onFocus={() => setShowPop('shown')}
                            onBlur={() =>
                                setTimeout(() => {
                                    setShowPop('hidden')
@@ -100,7 +122,7 @@ export const HeaderComponent = () => {
                     <div className={`pop-up-menu ${showPop} ${theme}`} onClick={() => setShowPop('hidden')}>
 
                         {searchMovies?.map(element =>
-                            <Link className={`x`} to={`/${element.id}?${querry.toString()}`} preventScrollReset={false}
+                            <Link className={`x`} to={`/${element.id}?$${qs.stringify(querryParams)}`} preventScrollReset={false}
                                   key={element.id}>
                                 <div className={`find-element`}>
                                     {<img className={`find-poster`}
