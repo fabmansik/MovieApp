@@ -6,7 +6,7 @@ interface IProps{
     movie:IMovieList
 }
 export const MovieInfoComponent:FC<PropsWithChildren<IProps>> = ({movie}) => {
-    const genresRedux = useAppSelector(state => state.genres.results)
+    const genresRedux = useAppSelector(state => state.movies.genres)
     let genres:string[] = []
     movie.genre_ids.map(genre_id=>
         genresRedux.find(genre => genre.id === genre_id ? genres.push(genre.name) :  0)

@@ -22,7 +22,25 @@ const paramsSlice = createSlice({
     reducers:{
         getTheme: (state) => {
             const theme = localStorage.getItem('theme')
-            theme? state.theme= theme : localStorage.setItem('theme',`${theme}`)
+            if (theme){
+                state.theme= theme
+            } else{
+                localStorage.setItem('theme',`light`)
+                state.theme = 'light'
+            }
+        },
+        getLng: (state)=>{
+            const lng = localStorage.getItem('lng')
+            if(lng!== null){
+                state.lng = lng
+            } else {
+                state.lng = 'en-US'
+                localStorage.setItem('lng','en-US')
+            }
+        },
+        setLng:(state, action)=>{
+            state.lng = action.payload
+            localStorage.setItem('lng',`${action.payload}`)
         },
         changeTheme: (state) => {
             if (state.theme==='light'){

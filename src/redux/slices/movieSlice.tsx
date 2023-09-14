@@ -32,12 +32,23 @@ const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, string>(
         }
     }
 )
-
-const getMovieById = createAsyncThunk<IMovieInfo, number>(
-    'movieSlice/getMovieById',
-    async (id,{rejectWithValue}) =>{
+const getGenres = createAsyncThunk<IGenre[], string>(
+    'movieSlice/getGenres',
+    async (opt,{rejectWithValue}) =>{
         try {
-            const {data} = await ApiServices.AxiosSearchById(id)
+            const {data} = await ApiServices.AxiosGetGenres(opt)
+            return data.genres
+        } catch (e) {
+            const err = e as AxiosError
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+const getMovieById = createAsyncThunk<IMovieInfo, { id:number, options:string }>(
+    'movieSlice/getMovieById',
+    async (opt,{rejectWithValue}) =>{
+        try {
+            const {data} = await ApiServices.AxiosSearchById(opt.id,opt.options)
             return data
         } catch (e) {
             const err = e as AxiosError
@@ -60,10 +71,13 @@ const movieSlice = createSlice({
             state.currentMovie = action.payload
             console.log(action.payload)
         })
+        .addCase(getGenres.fulfilled, (state, action)=>{
+            state.genres = action.payload
+        })
 
 })
 const {reducer: movieReducer, actions} = movieSlice
 const movieActions = {
-    ...actions, getMovies, getMovieById
+    ...actions, getMovies, getMovieById, getGenres
 }
 export {movieReducer, movieActions}

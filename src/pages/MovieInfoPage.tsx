@@ -6,21 +6,47 @@ import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
 import {IGenre, IMovieList} from "../interfaces/moviesInterfaces";
 import {movieActions} from "../redux/slices/movieSlice";
 export const MovieInfoPage = () => {
-
+    const movieInfoPattern = {
+        en: {
+            genres: 'Genres',
+            popularity: 'Popularity',
+            adult: 'Adult',
+            release: 'Release Date',
+            originalLng: 'Original Language',
+            originalTitle: 'Original Title',
+            description:'Description'
+        },
+        uk: {
+            genres: 'Жанри',
+            popularity: 'Популярність',
+            adult: 'Для дорослих',
+            release: 'Дата релізу',
+            originalLng: 'Мова оригіналу',
+            originalTitle: 'Оригінальна назва',
+            description:'Опис'
+        }
+    }
     const dispatch = useAppDispatch()
 
     const movie = useAppSelector(state => state.movies.currentMovie)
+    const {lng} = useAppSelector(state => state.params)
     const params:{id?:number} = useParams()
     console.log(params)
     console.log(movie)
     useEffect(()=>{
-        dispatch(movieActions.getMovieById(params.id))
+        dispatch(movieActions.getMovieById({id:params.id, options:lng}))
     },[params])
+    let movieInfoText
+    if (lng === 'uk') {
+        movieInfoText = movieInfoPattern.uk
+    } else {
+        movieInfoText = movieInfoPattern.en
+    }
 
 return(
     <>
-        <ScrollRestoration />
-        {movie !== null? <div className='movie-info-page'>
+        <ScrollRestoration/>
+        {movie !== null ? <div className='movie-info-page'>
             <div className='movie-all'>
                 <div className='movie-all-title'>
                     <h1>{movie.title}</h1>
@@ -37,29 +63,29 @@ return(
                             </div>
                         </div>
                         <div className='movie-all-genres'>
-                            <p className='info-title'>Genres: </p>
+                            <p className='info-title'>{movieInfoText.genres}: </p>
                             <p>{movie.genres?.map(genre => <span key={genre.id}>{genre.name} </span>)}</p>
                         </div>
                         <div className='movie-all-added-info'>
-                            <p className='info-title'>Popularity: </p>
+                            <p className='info-title'>{movieInfoText.popularity}: </p>
                             <p>{movie.popularity}</p>
-                            <p className='info-title'>Adult: </p>
+                            <p className='info-title'>{movieInfoText.adult}: </p>
                             <p>{movie.adult?.toString() || 'No info'}</p>
-                            <p className='info-title'>Release date: </p>
+                            <p className='info-title'>{movieInfoText.release}: </p>
                             <p>{movie.release_date}</p>
                         </div>
                         <div className='movie-all-original'>
-                            <p className='info-title'>Original Language: </p><p>{movie.original_language}</p>
-                            <p className='info-title'>Original Title: </p><p>{movie.original_title}</p>
+                            <p className='info-title'>{movieInfoText.originalLng}: </p><p>{movie.original_language}</p>
+                            <p className='info-title'>{movieInfoText.originalTitle}: </p><p>{movie.original_title}</p>
                         </div>
                     </div>
                 </div>
                 <div className='movie-all-description'>
-                    <h3>Description:</h3>
+                    <h3>{movieInfoText.description}:</h3>
                     <p>{movie.overview}</p>
                 </div>
             </div>
-        </div>:<p>Loading</p>}
+        </div> : <p>Loading</p>}
     </>
 )
 }

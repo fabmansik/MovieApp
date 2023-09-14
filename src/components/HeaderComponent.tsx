@@ -4,36 +4,50 @@ import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {ApiServices} from "../services/ApiServices";
 import {IMovieList} from "../interfaces/moviesInterfaces";
+import {GenresFilterComponent} from "./GenresFilterComponent"
 
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
 import LanguageComponent from "./LanguageComponent";
 import {paramsActions} from "../redux/slices/paramsSlice";
 
 export const HeaderComponent = () => {
+    const headerText = {
+        en:{
+            genrePop:'All Genres',
+        },
+        uk:{
+            genrePop:'Всі жанри',
+        }
+    }
     const dispatch = useAppDispatch()
     const params = useParams()
-    const [querry] = useSearchParams()
+    const [querry, setQuerry] = useSearchParams()
     const {register, watch} = useForm()
-
-    const {theme, smallerThan750} = useAppSelector(state => state.params)
-    const genres = useAppSelector(state => state.genres.results)
+    const {theme, lng} = useAppSelector(state => state.params)
+    const genres = useAppSelector(state => state.movies.genres)
 
     const [showPop, setShowPop] = useState<string>('hidden')
     const [searchMovies, setSearchMovies] = useState<IMovieList[]>([])
     const [showGenres, setShowGenres] = useState<string>('hidden')
     const [showLanguage, setShowLanguage] = useState<string>('hidden')
+    const [showGenrePop, setShowGenrePop] = useState<boolean>(true)
     const watchPop = watch('pop-up');
 
     console.log(Object.keys(genres))
 
-    console.log(params)
     useEffect(() => {
         dispatch(paramsActions.getTheme())
-        ApiServices.AxiosSearchMovie(watchPop || '', setSearchMovies)
+        console.log(querry.get('with_genres'))
+        if(querry.get('with_genres')!==null){
+            setShowGenrePop(false)
+        }else{
+            setShowGenrePop(true)
+        }
+        console.log(querry.toString())
+        ApiServices.AxiosSearchMovie(watchPop || '', setSearchMovies,lng)
     }, [watchPop])
-    console.log(searchMovies)
 
-    // @ts-ignore
+
     return (
         <header className={theme}>
             <div className={`top-header ${theme}`}>
@@ -46,7 +60,7 @@ export const HeaderComponent = () => {
                     </div>
                 </div>
                 <div className='header-imgs'>
-                    <Link to={querry.get('page') !== '1' && params.id ? `/?${querry.toString()}` : `/`}>
+                    <Link to={querry.get('page') !== '1' && params.id ? `/?language=${lng}&${querry.toString()}` : `/?language=${lng}`}>
                         <img className='logo-img' src={`/Logo_${theme}.png`} alt="logo"></img>
                     </Link>
                 </div>
@@ -66,10 +80,19 @@ export const HeaderComponent = () => {
                         })
                         setShowLanguage('hidden')
                     }}>
-                        Genres
+                        {genres.map(element=>{
+                            if (querry.get('with_genres')===`${element.id}`){
+                                return element.name
+                            }else{
+                            }})
+                        }
+                        {showGenrePop && (lng==='uk'?headerText.uk.genrePop:headerText.en.genrePop)}
+
                     </button>
-                    <div className={`genres ${showGenres}`}>
-                        {genres.map(genre => <p className={`genre-names`}>{genre.name}</p>)}
+                    <div className={`genres ${showGenres}`} id={`genres-pop`}>
+                        {genres.map(genre =>
+                            <GenresFilterComponent genre={genre}/>
+                        )}
                     </div>
                     <button className={`language-button`} onClick={() => {
                         setShowLanguage(prevState => {
@@ -83,15 +106,14 @@ export const HeaderComponent = () => {
                     }}>Language
                     </button>
                     <div className={`language ${showLanguage}`}>
-                        <p>English</p>
-                        <p>Українська</p>
+                        <LanguageComponent/>
                     </div>
                 </div>
 
                 <div className={`search ${theme}`}>
                     <img className={`shape-img`} src={`/shape_${theme}.png`} alt='shape'></img>
                     <input type='text' autoComplete={`off`} className={showPop}
-                           placeholder={`Пошук фільмів`} {...register('pop-up')} onFocus={() => setShowPop('shown')}
+                           placeholder={lng==='uk'?`Пошук фільмів`:'Find movies'} {...register('pop-up')} onFocus={() => setShowPop('shown')}
                            onBlur={() =>
                                setTimeout(() => {
                                    setShowPop('hidden')
@@ -100,7 +122,7 @@ export const HeaderComponent = () => {
                     <div className={`pop-up-menu ${showPop} ${theme}`} onClick={() => setShowPop('hidden')}>
 
                         {searchMovies?.map(element =>
-                            <Link className={`x`} to={`/${element.id}?${querry.toString()}`} preventScrollReset={false}
+                            <Link className={`x`} to={`/${element.id}?language=${lng}&${querry.toString()}`} preventScrollReset={false}
                                   key={element.id}>
                                 <div className={`find-element`}>
                                     {<img className={`find-poster`}
@@ -109,7 +131,6 @@ export const HeaderComponent = () => {
 
                                     <div className={`find-info`}>
                                         <p className={`search-title`}>{element.title}</p>
-                                        <p>Genres</p>
                                         {/*<GenreBadgeComponent badge={}/>*/}
                                     </div>
                                     <div className={`find-rating`}>
