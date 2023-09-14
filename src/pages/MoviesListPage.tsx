@@ -11,7 +11,7 @@ import qs from "qs";
 export const MoviesListPage = () => {
 
     const movies = useAppSelector(state => state.movies.moviePage)
-    const {querryParams} = useAppSelector(state => state.params)
+    const {language,theme} = useAppSelector(state => state.params)
     const [querry, setQuerry] = useSearchParams()
     const dispatch = useAppDispatch()
 

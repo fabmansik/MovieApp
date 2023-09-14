@@ -6,10 +6,10 @@ interface IProps{
     badge:string
 }
 export const GenreBadgeComponent:FC<PropsWithChildren<IProps>> = ({badge}) => {
-    const {theme} = useAppSelector(state => state.params.querryParams)
+    const theme = useAppSelector(state => state.params.theme)
     return(
-            <Badge color={theme === "light"? 'secondary' : 'dark'} className='badge' pill>
-                {badge}
-            </Badge>
-        )
+        <Badge color={theme === "light"? 'secondary' : 'dark'} className='badge' pill>
+            {badge}
+        </Badge>
+    )
 }

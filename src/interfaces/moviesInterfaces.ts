@@ -79,5 +79,9 @@ export interface IQuerry{
     theme:string
     with_genres:number
     language: string
-    page: number
+    page:number
+}
+export interface IParametrs{
+    theme:string
+    language:string
 }

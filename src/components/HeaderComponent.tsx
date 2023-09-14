@@ -16,10 +16,7 @@ export const HeaderComponent = () => {
     const params = useParams()
     const {register, watch} = useForm()
 
-    const {querryParams} = useAppSelector(state => state.params)
-    const {theme, language, page, with_genres} = querryParams
-    const qr= {...querryParams, page:1, with_genres: 0}
-    console.log(qs.stringify(querryParams))
+    const {theme,language} = useAppSelector(state => state.params)
     const genres = useAppSelector(state => state.movies.genres)
 
     const [showPop, setShowPop] = useState<string>('hidden')
@@ -28,26 +25,10 @@ export const HeaderComponent = () => {
     const [showLanguage, setShowLanguage] = useState<string>('hidden')
     const watchPop = watch('pop-up');
     useEffect(() => {
+        dispatch(paramsActions.getTheme())
         ApiServices.AxiosSearchMovie(watchPop || '', setSearchMovies,language)
     }, [watchPop])
 
-
-
-    let genreButton = document.getElementById('genres-button');
-    // genreButton.onmouseenter === true?
-    let genrePop = document.getElementById('genres-pop');
-    // useEffect(()=>{
-    //     if(genreButton.onmouseenter || genrePop.onmouseenter){
-    //         setShowGenres(prevState => {
-    //             if (prevState === 'hidden') {
-    //                 return 'shown'
-    //             } else {
-    //                 return 'hidden'
-    //             }
-    //         })
-    //         setShowLanguage('hidden')
-    //     }else{}
-    // },[genreButton.onmouseenter, genrePop.onmouseenter])
 
     return (
         <header className={theme}>
@@ -111,7 +92,7 @@ export const HeaderComponent = () => {
                     <img className={`shape-img`} src={`/shape_${theme}.png`} alt='shape'></img>
                     <input type='text' autoComplete={`off`} className={showPop}
                            placeholder={
-                        querryParams.language==='uk'?`Пошук фільмів`:'Find movies'
+                        language==='uk'?`Пошук фільмів`:'Find movies'
                     }
                            {...register('pop-up')} onFocus={() => setShowPop('shown')}
                            onBlur={() =>
@@ -122,7 +103,7 @@ export const HeaderComponent = () => {
                     <div className={`pop-up-menu ${showPop} ${theme}`} onClick={() => setShowPop('hidden')}>
 
                         {searchMovies?.map(element =>
-                            <Link className={`x`} to={`/${element.id}?$${qs.stringify(querryParams)}`} preventScrollReset={false}
+                            <Link className={`x`} to={`/${element.id}?$${qs.stringify(params)}`} preventScrollReset={false}
                                   key={element.id}>
                                 <div className={`find-element`}>
                                     {<img className={`find-poster`}

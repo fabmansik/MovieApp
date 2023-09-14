@@ -9,16 +9,7 @@ import qs from "qs";
 
 export const MoviesPageContainer = () => {
 
-    const {querryParams} = useAppSelector(state => state.params)
-    const {language, page, with_genres, theme} = querryParams
-    const [querry, setQuery]=useSearchParams({language: '', page: `1`, with_genres:``})
-    useEffect(()=>{
-        paramsActions.getDefaults()
-        setQuery(prev => {
-            prev.set('language','')
-            return prev
-        })
-    },[])
+    const {language,theme} = useAppSelector(state => state.params)
 
     const footerText = {
         en:'Project made by Milan Somyk',

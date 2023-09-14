@@ -1,20 +1,17 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {useMediaPredicate} from "react-media-hook";
-import {IQuerry} from "../../interfaces/moviesInterfaces";
+import {IParametrs, IQuerry} from "../../interfaces/moviesInterfaces";
 import qs from "qs";
 export interface IState{
-    querryParams:IQuerry
+    theme: string
+    language: string
     smallerThan750: boolean
     smallerThan1000: boolean
     between: boolean
 }
 const initialState:IState ={
-    querryParams:{
-        theme: null,
-        with_genres:null,
-        language:null,
-        page:1
-    },
+    theme:null,
+    language:null,
     smallerThan750: null,
     smallerThan1000: null,
     between: null
@@ -26,33 +23,30 @@ const paramsSlice = createSlice({
     reducers:{
 
         setTheme: (state) => {
-            if (state.querryParams.theme==='light'){
-                state.querryParams.theme = 'dark'
+            if (state.theme==='light'){
+                state.theme = 'dark'
                 localStorage.setItem('theme','dark')
             } else {
-                state.querryParams.theme = 'light'
+                state.theme = 'light'
                 localStorage.setItem('theme','light')
             }
         },
 
         setLng:(state, action)=>{
-            state.querryParams.language = action.payload
+            state.language = action.payload
         },
-        setPage:(state, action)=>{
-            state.querryParams.page = action.payload
-        },
-        getDefaults: (state) =>{
-            const lng = localStorage.getItem('lng')
-            if(lng!== null){
-                state.querryParams.language = lng
-                console.log(lng)
-            } else {
-                state.querryParams.language = 'en-US'
-                localStorage.setItem('lng','en-US')
-            }
+        getTheme: (state) => {
             const theme = localStorage.getItem('theme')
-            theme? state.querryParams.theme = theme : localStorage.setItem('theme',`${theme}`)
-
+            theme? state.theme= theme : localStorage.setItem('theme',`${theme}`)
+        },
+        changeTheme: (state) => {
+            if (state.theme==='light'){
+                state.theme = 'dark'
+                localStorage.setItem('theme','dark')
+            } else {
+                state.theme = 'light'
+                localStorage.setItem('theme','light')
+            }
         },
 
         getSm750: (state) => {

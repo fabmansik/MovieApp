@@ -1,7 +1,7 @@
 import {useAppSelector} from "../Hooks/reduxHooks";
 
 export const UserInfoComponent = () => {
-    const {language, theme} = useAppSelector(state => state.params.querryParams)
+    const {language, theme} = useAppSelector(state => state.params)
     const welcomeText={
         en:'Welcome Milan',
         uk:'Вітаю Мілан'

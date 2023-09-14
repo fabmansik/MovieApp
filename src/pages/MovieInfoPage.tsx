@@ -29,7 +29,7 @@ export const MovieInfoPage = () => {
     }
 
     const dispatch = useAppDispatch()
-    const {language} = useAppSelector(state => state.params.querryParams)
+    const {language} = useAppSelector(state => state.params)
     const movie = useAppSelector(state => state.movies.currentMovie)
     const params: { id?: number } = useParams()
     useEffect(() => {
