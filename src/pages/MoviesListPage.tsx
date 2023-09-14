@@ -6,6 +6,7 @@ import {IMovieList, IMovieResponse} from "../interfaces/moviesInterfaces";
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
 import {movieActions} from "../redux/slices/movieSlice";
 import PaginationComponent from "../components/ListComponents/PaginationComponent";
+import qs from "qs";
 
 export const MoviesListPage = () => {
 
@@ -13,11 +14,10 @@ export const MoviesListPage = () => {
     const {lng} = useAppSelector(state => state.params)
     const dispatch = useAppDispatch()
     const [querry, setQuerry] = useSearchParams()
-
     useEffect(() => {
         dispatch(movieActions.getMovies(querry.toString()))
         // ApiServices.AxiosGetMoviesExactPage(setMoviesList, setGetInfo, page.page))
-        dispatch(movieActions.getGenres(lng))
+        dispatch(movieActions.getGenres(lng||querry.get('language')))
     }, [querry.toString()])
     return (
         <>

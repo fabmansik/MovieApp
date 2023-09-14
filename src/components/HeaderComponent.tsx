@@ -1,4 +1,4 @@
-import {Link, useParams, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {UserInfoComponent} from "./UserInfoComponent";
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
@@ -9,6 +9,7 @@ import {GenresFilterComponent} from "./GenresFilterComponent"
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
 import LanguageComponent from "./LanguageComponent";
 import {paramsActions} from "../redux/slices/paramsSlice";
+import qs from "qs";
 
 export const HeaderComponent = () => {
     const headerText = {
@@ -21,11 +22,13 @@ export const HeaderComponent = () => {
     }
     const dispatch = useAppDispatch()
     const params = useParams()
-    const [querry, setQuerry] = useSearchParams()
+    const navigate = useNavigate()
+    const [querry, setQuery] = useSearchParams()
     const {register, watch} = useForm()
     const {theme, lng} = useAppSelector(state => state.params)
     const genres = useAppSelector(state => state.movies.genres)
-
+    const parsed = qs.parse(querry.toString())
+    console.log(parsed.with_genres)
     const [showPop, setShowPop] = useState<string>('hidden')
     const [searchMovies, setSearchMovies] = useState<IMovieList[]>([])
     const [showGenres, setShowGenres] = useState<string>('hidden')
@@ -38,14 +41,16 @@ export const HeaderComponent = () => {
     useEffect(() => {
         dispatch(paramsActions.getTheme())
         console.log(querry.get('with_genres'))
-        if(querry.get('with_genres')!==null){
+        console.log(querry.toString())
+        ApiServices.AxiosSearchMovie(watchPop || '', setSearchMovies,lng)
+    }, [watchPop])
+    useEffect(()=>{
+        if(parsed.with_genres){
             setShowGenrePop(false)
         }else{
             setShowGenrePop(true)
         }
-        console.log(querry.toString())
-        ApiServices.AxiosSearchMovie(watchPop || '', setSearchMovies,lng)
-    }, [watchPop])
+    },[querry.toString()])
 
 
     return (
@@ -60,7 +65,7 @@ export const HeaderComponent = () => {
                     </div>
                 </div>
                 <div className='header-imgs'>
-                    <Link to={querry.get('page') !== '1' && params.id ? `/?language=${lng}&${querry.toString()}` : `/?language=${lng}`}>
+                    <Link to={querry.get('page') !== '1' && params.id ? `/?language=${lng}&${querry.toString()}` : `/?language=${lng}&with_genres=${querry.get('with_genres')}`}>
                         <img className='logo-img' src={`/Logo_${theme}.png`} alt="logo"></img>
                     </Link>
                 </div>
@@ -70,6 +75,26 @@ export const HeaderComponent = () => {
 
             <div className={`low-header ${theme}`}>
                 <div className={`genres-language`}>
+
+                    <button className={`language-button`} onClick={() => {
+                        setShowLanguage(prevState => {
+                            if (prevState === 'hidden') {
+                                return 'shown'
+                            } else {
+                                return 'hidden'
+                            }
+                        })
+                        setShowGenres('hidden')
+                    }}
+                    onBlur={()=>{
+                        setTimeout(()=>{
+                            setShowLanguage('hidden')
+                        },300)
+                    }}>{lng==='uk'?'Українська':'English'}
+                    </button>
+                    <div className={`language ${showLanguage}`}>
+                        <LanguageComponent/>
+                    </div>
                     <button className={`genres-button`} onClick={() => {
                         setShowGenres(prevState => {
                             if (prevState === 'hidden') {
@@ -79,7 +104,13 @@ export const HeaderComponent = () => {
                             }
                         })
                         setShowLanguage('hidden')
-                    }}>
+                    }}
+                            onBlur={()=>{
+                                setTimeout(()=>{
+                                    setShowGenres('hidden')
+                                },300)
+                            }}
+                    >
                         {genres.map(element=>{
                             if (querry.get('with_genres')===`${element.id}`){
                                 return element.name
@@ -93,20 +124,18 @@ export const HeaderComponent = () => {
                         {genres.map(genre =>
                             <GenresFilterComponent genre={genre}/>
                         )}
-                    </div>
-                    <button className={`language-button`} onClick={() => {
-                        setShowLanguage(prevState => {
-                            if (prevState === 'hidden') {
-                                return 'shown'
-                            } else {
-                                return 'hidden'
-                            }
-                        })
-                        setShowGenres('hidden')
-                    }}>Language
-                    </button>
-                    <div className={`language ${showLanguage}`}>
-                        <LanguageComponent/>
+                        {!showGenrePop && (lng==='uk'?<p
+                            className={`genre-names`}
+                            onClick={()=> {
+                                setQuery(prev =>{
+                                    prev.set('with_genres', ``)
+                                    prev.set('page','1')
+                                    return prev
+                                })
+                                if(params.id){
+                                    navigate(`/?${querry.toString()}`)
+                                }
+                            }}>{headerText.uk.genrePop}</p>:<p className={`genre-names`}>{headerText.en.genrePop}</p>)}
                     </div>
                 </div>
 
