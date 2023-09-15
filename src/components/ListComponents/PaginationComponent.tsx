@@ -11,7 +11,7 @@ const PaginationComponent = () => {
         })
     }
     return (
-        <div>
+        <div className={'pagination'}>
             <Pagination count={500} onChange={handlePageChange} page={+querry.get('page')}/>
         </div>
     );

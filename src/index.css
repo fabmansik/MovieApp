@@ -15,6 +15,44 @@ html{
   background-color: #F0EFEE;
   scroll-behavior: smooth;
 }
+
+.filter-button{
+  width: fit-content;
+  background-color: #f5f4f2;
+  transition: 1s;
+  color: #8a8a8a;
+}
+.filter-button:hover{
+  background-color: #e2e2e2;
+  transition: 1s;
+}
+.filter.hidden{
+  background-color: transparent;
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+}
+.filter p{
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+.filter p:hover{
+  cursor: pointer;
+}
+.filter.shown{
+  top: 100px;
+  height: fit-content;
+  width: fit-content;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow: hidden;
+  position: absolute;
+  background-color:#FFFFFF;
+}
 .genres.hidden{
   background-color: transparent;
   height: 0;
@@ -50,7 +88,7 @@ html{
   display: flex;
   top: 100px;
   height: 32px;
-  width: 92px;
+  width: fit-content;
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -62,11 +100,12 @@ html{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  width: fit-content;
+  height: 32px;
+  padding: 0 10px;
 }
 .language-button{
-  width: 92px;
+  width: fit-content;
   background-color: #f5f4f2;
   transition: 1s;
   color: #8a8a8a;
@@ -78,7 +117,7 @@ html{
 .language p:hover{
   cursor: pointer;
 }
-.genres-language .genre-names{
+.genres-language-filter .genre-names{
   margin: 5px;
   display: flex;
   justify-content: center;
@@ -101,7 +140,19 @@ html{
   position: relative;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
+.pagination{
+  display: flex;
+  justify-content: center;
+}
+.MuiPagination-root{
+  margin: 20px 0;
+}
+.MuiPagination-ul button{
+  color:#8a8a8a;
+}
+
 .find-poster{
   height: 50px;
   margin: 5px;
@@ -168,7 +219,7 @@ header{
   padding-left: 15%;
   color: #8a8a8a;
 }
-.genres-language p:hover{
+.genres-language-filter p:hover{
   background-color: #e2e2e2;;
   transition: 1s;
 }
@@ -186,7 +237,7 @@ header{
   background-color: #e2e2e2;
   transition: 1s;
 }
-.genres-language{
+.genres-language-filter{
   width: fit-content;
   max-height: 32px ;
   overflow: hidden;
@@ -195,7 +246,7 @@ header{
   justify-content: space-between;
 
 }
-.genres-language p{
+.genres-language-filter p{
   margin: 0;
   transition: 1s;
 }
@@ -452,14 +503,19 @@ footer{
   z-index: 1;
   box-shadow: 0 0 7px 1px #757575;
   transition: 1s;
+
 }
 .movie-card:hover{
   cursor: pointer;
 }
 .poster-div{
+
 }
 .poster-img{
   width: 100%;
+}
+.image-div{
+
 }
 .page-input{
   position: relative;

@@ -1,13 +1,16 @@
-import {createAsyncThunk, createSlice, isFulfilled} from "@reduxjs/toolkit";
-import {IMovieResponse, IMovieList, IMovieInfo, IGenre} from "../../interfaces/moviesInterfaces";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {IMovieResponse, IMovieList, IMovieInfo, IGenre, IVideo, ICredits} from "../../interfaces/moviesInterfaces";
 import {ApiServices} from "../../services/ApiServices";
-import axios, {AxiosError} from "axios";
+import {AxiosError} from "axios";
 
 export interface IMovieState{
     moviePage: IMovieResponse<IMovieList[]>
     currentMovie: IMovieInfo
     isLoading: boolean
     genres: IGenre[]
+    videos: IVideo[]
+    credits: ICredits
+    similar: IMovieList[]
 }
 const initialState:IMovieState = {
     moviePage:{
@@ -18,7 +21,14 @@ const initialState:IMovieState = {
     },
     currentMovie: null,
     isLoading:false,
-    genres: []
+    genres: [],
+    videos:[],
+    credits:{
+        id:null,
+        cast:[],
+        crew:[]
+    },
+    similar:[]
 }
 const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, string>(
     'movieSlice/getMovies',
@@ -56,6 +66,42 @@ const getMovieById = createAsyncThunk<IMovieInfo, { id:number, options:string }>
         }
     }
 )
+const getVideos = createAsyncThunk<IVideo[], { id:number, options:string }>(
+    'movieSlice/getVideos',
+    async (opt, {rejectWithValue})=>{
+        try {
+            const {data} = await ApiServices.AxiosVideos(opt.id, opt.options)
+            return data.results
+        } catch (e){
+            const err = e as AxiosError
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+const getCredits = createAsyncThunk<ICredits, {id:number, lng:string}>(
+    'movieSlice/getCredits',
+    async (opt,{rejectWithValue})=>{
+        try {
+            const {data} = await ApiServices.AxiosCredits(opt.id, opt.lng)
+            return data
+        } catch (e) {
+            const err = e as AxiosError
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+const getSimilar = createAsyncThunk<IMovieList[],{id:number, lng:string}>(
+    'movieSlice/getSimilar',
+    async (opt, {rejectWithValue})=>{
+        try {
+            const {data} = await ApiServices.AxiosSimilar(opt.id, opt.lng)
+            return data.results
+        } catch (e) {
+            const err = e as AxiosError
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
 const movieSlice = createSlice({
     name: 'movieSlice',
     initialState,
@@ -74,10 +120,19 @@ const movieSlice = createSlice({
         .addCase(getGenres.fulfilled, (state, action)=>{
             state.genres = action.payload
         })
+        .addCase(getVideos.fulfilled, (state, action)=>{
+            state.videos = action.payload
+        })
+        .addCase(getCredits.fulfilled, (state, action)=>{
+            state.credits = action.payload
+        })
+        .addCase(getSimilar.fulfilled, (state, action)=>{
+            state.similar = action.payload
+        })
 
 })
 const {reducer: movieReducer, actions} = movieSlice
 const movieActions = {
-    ...actions, getMovies, getMovieById, getGenres
+    ...actions, getMovies, getMovieById, getGenres, getVideos, getCredits, getSimilar
 }
 export {movieReducer, movieActions}

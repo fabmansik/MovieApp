@@ -18,6 +18,10 @@ export const MoviesPageContainer = () => {
             })
         }
     },[params])
+    const footerText = {
+        en:'Project made by Milan Somyk',
+        uk:'Проект зроблено Міланом Сомиком'
+    }
     return (
 
         <>
@@ -26,7 +30,7 @@ export const MoviesPageContainer = () => {
                 <HeaderComponent/>
                 <Outlet/>
                 <footer>
-                    Project made by Milan Somyk
+                    {lng==='uk'?footerText.uk:footerText.en}
                 </footer>
             </div>
         </>

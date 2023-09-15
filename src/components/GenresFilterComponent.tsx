@@ -14,7 +14,6 @@ export const GenresFilterComponent:FC<PropsWithChildren<IProps>> = ({genre}) => 
     return (
         <p
             className={`genre-names ${+query.get('with_genres')===genre.id?'disabled':'enabled'}`}
-            key={`${genre.id}`}
             onClick={()=> {
                 setQuery(prev =>{
                     prev.set('with_genres', `${genre.id}`)
