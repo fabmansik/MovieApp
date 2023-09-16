@@ -180,7 +180,7 @@ export const MovieInfoPage = () => {
                         </div>}
 
                 </div>
-            </div> : <p>Loading</p>}
+            </div> : ''}
         </>
     )
 }

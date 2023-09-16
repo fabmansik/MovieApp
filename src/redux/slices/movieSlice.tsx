@@ -20,7 +20,7 @@ export interface IMovieState{
     similar: IMovieList[]
     actor: ICast
     producer: ICrew
-
+    searchPage: IMovieResponse<IMovieList[]>
 }
 const initialState:IMovieState = {
     moviePage:{
@@ -39,7 +39,13 @@ const initialState:IMovieState = {
     },
     similar:[],
     actor: null,
-    producer: null
+    producer: null,
+    searchPage:{
+        page: null,
+        results: [],
+        total_pages: null,
+        total_results: null
+    }
 }
 const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, string>(
     'movieSlice/getMovies',
@@ -129,7 +135,18 @@ const getWithCrew = createAsyncThunk<IMovieResponse<IMovieList[]>, string>(
         }
     }
 )
-
+const searchMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, string>(
+    'movieSlice/searchMovies',
+    async (page,{rejectWithValue}) =>{
+        try {
+            const {data} = await ApiServices.AxiosSearchMovie(page)
+            return data
+        } catch (e) {
+            const err = e as AxiosError
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
 const movieSlice = createSlice({
     name: 'movieSlice',
     initialState,
@@ -139,6 +156,9 @@ const movieSlice = createSlice({
         },
         withProducer: (state, action) =>{
             state.producer = action.payload
+        },
+        clearSearchPage: (state)=>{
+            state.searchPage = initialState.searchPage
         }
     },
     extraReducers: builder => builder
@@ -164,10 +184,13 @@ const movieSlice = createSlice({
         .addCase(getSimilar.fulfilled, (state, action)=>{
             state.similar = action.payload
         })
+        .addCase(searchMovies.fulfilled, (state, action)=>{
+            state.searchPage = action.payload
+        })
 
 })
 const {reducer: movieReducer, actions} = movieSlice
 const movieActions = {
-    ...actions, getMovies, getMovieById, getGenres, getVideos, getCredits, getSimilar, getWithCrew
+    ...actions, getMovies, getMovieById, getGenres, getVideos, getCredits, getSimilar, getWithCrew, searchMovies
 }
 export {movieReducer, movieActions}

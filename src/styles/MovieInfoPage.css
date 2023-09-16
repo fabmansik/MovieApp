@@ -38,6 +38,7 @@
 .similar-movie{
     width: 17%;
     margin: 0 0 20px 0;
+    overflow: hidden;
 }
 .similar-movie p{
     margin: 0;
@@ -212,6 +213,9 @@
 @media screen and (max-width: 750px) {
     .movie-all-info{
         display: block;
+    }
+    .similar-movie{
+        width: 45%;
     }
     .movie-all-details{
         padding: 0 20px 20px;

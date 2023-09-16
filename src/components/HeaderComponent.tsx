@@ -1,9 +1,7 @@
 import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {UserInfoComponent} from "./UserInfoComponent";
 import React, {useEffect, useState} from "react";
-import {set, useForm} from "react-hook-form";
-import {ApiServices} from "../services/ApiServices";
-import {IMovieList} from "../interfaces/moviesInterfaces";
+import {useForm} from "react-hook-form";
 import {GenresFilterComponent} from "./GenresFilterComponent"
 
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
@@ -14,39 +12,45 @@ import FilterComponent from "./FilterComponent";
 import ThemeComponent from "./ThemeComponent";
 import HeaderLogoComponent from "./HeaderLogoComponent";
 import {movieActions} from "../redux/slices/movieSlice";
+import {ApiServices} from "../services/ApiServices";
+import {IMovieList} from "../interfaces/moviesInterfaces";
 
 export const HeaderComponent = () => {
     const headerText = {
         en: {
             genrePop: 'All Genres',
+            moreMovies: 'More Movies...'
         },
         uk: {
             genrePop: 'Всі жанри',
+            moreMovies: 'Більше фільмів...'
         }
     }
     const dispatch = useAppDispatch()
     const params = useParams()
     const navigate = useNavigate()
     const [querry, setQuery] = useSearchParams()
-    const {register, watch} = useForm()
+    const {register, resetField, watch} = useForm()
     const {theme, lng, smallerThan750} = useAppSelector(state => state.params)
-    const genres = useAppSelector(state => state.movies.genres)
+    const {genres, searchPage} = useAppSelector(state => state.movies)
     const parsed = qs.parse(querry.toString())
     const [showPop, setShowPop] = useState<string>('hidden')
-    const [searchMovies, setSearchMovies] = useState<IMovieList[]>([])
+    // const [searchMovies, setSearchMovies] = useState<IMovieList[]>([])
     const [showGenres, setShowGenres] = useState<string>('hidden')
     const [showLanguage, setShowLanguage] = useState<string>('hidden')
     const [showFilter, setShowFilter] = useState<string>('hidden')
     const [showGenrePop, setShowGenrePop] = useState<boolean>(true)
+    const [searchMovies, setSearchMovies] = useState<IMovieList[]>([])
     const watchPop = watch('pop-up');
-    console.log(qs.stringify({
-        ...parsed,
-        page: '1',
-        query: watchPop
-    }))
+
     useEffect(() => {
         dispatch(paramsActions.getTheme())
-        ApiServices.AxiosSearchMovie(watchPop || '', setSearchMovies, lng)
+        // dispatch(movieActions.searchMovies(qs.stringify({
+        //     ...parsed,
+        //     page: '1',
+        //     query: watchPop
+        // })))
+        ApiServices.AxiosSearchPop(watchPop || '', setSearchMovies, lng)
     }, [watchPop])
     useEffect(() => {
         if (parsed.with_genres) {
@@ -54,8 +58,13 @@ export const HeaderComponent = () => {
         } else {
             setShowGenrePop(true)
         }
+        if(!querry.get('query')){
+            dispatch(movieActions.clearSearchPage())
+            resetField('pop-up')
+        }
     }, [querry.toString()])
 
+    console.log(querry.delete('query'));
     return (
         <header className={theme}>
             <div className={`top-header ${theme}`}>
@@ -136,22 +145,24 @@ export const HeaderComponent = () => {
                             <p className={`genre-names`}>{headerText.en.genrePop}</p>)}
                     </div>
                     <div className={`filter-div`}>
-                        <button className={`filter-button`} onClick={() => {
-                            setShowFilter(prevState => {
-                                if (prevState === 'hidden') {
-                                    return 'shown'
-                                } else {
-                                    return 'hidden'
-                                }
-                            })
-                            setShowLanguage('hidden')
-                            setShowGenres('hidden')
-                        }}
+                        <button className={`filter-button`}
+                                onClick={() => {
+                                    setShowFilter(prevState => {
+                                        if (prevState === 'hidden') {
+                                            return 'shown'
+                                        } else {
+                                            return 'hidden'
+                                        }
+                                    })
+                                    setShowLanguage('hidden')
+                                    setShowGenres('hidden')
+                                }}
                                 onBlur={() => {
                                     setTimeout(() => {
                                         setShowFilter('hidden')
                                     }, 300)
-                                }}>{querry.get('sort_by') === '' ? 'Popularity' :
+                                }}>
+                            {querry.get('sort_by') === '' ? 'Popularity' :
                             querry.get('sort_by') === 'primary_release_date.desc' ? 'Release Date' :
                                 querry.get('sort_by') === 'vote_average.desc' ? 'Average Vote' : 'Popularity'}
                         </button>
@@ -175,7 +186,15 @@ export const HeaderComponent = () => {
                     <div className={`pop-up-menu ${showPop} ${theme}`} onClick={() => setShowPop('hidden')}>
 
                         {searchMovies?.slice(0, 10).map(element =>
-                            <Link className={`x`} to={`/${element.id}?${querry.toString()}`}
+                            <Link className={`x`}
+                                  onClick={()=> {
+                                      setQuery(prev => {
+                                          prev.delete('query')
+                                          return prev
+                                      })
+                                      resetField('pop-up')
+                                  }}
+                                  to={`/${element.id}?${querry.toString()}`}
                                   preventScrollReset={false}
                                   key={element.id}>
                                 <div className={`find-element`}>
@@ -192,13 +211,19 @@ export const HeaderComponent = () => {
                                 </div>
                             </Link>
                         )}
-                        {searchMovies.length> 10 &&
-                            <div className={`find-more`} onClick={() => dispatch(movieActions.getMovies(qs.stringify({
-                                ...parsed,
-                                page: '1',
-                                query: watchPop
-                            })))}>
-                                More Movies
+                        {searchMovies.length > 10 &&
+                            <div className={`find-more`} onClick={() => {
+                                navigate('/search')
+                                setQuery(prev => {
+                                    prev.set('query', watchPop)
+                                    prev.set('page', '1')
+                                    prev.delete('with_genres')
+                                    prev.delete('sort_by')
+                                    return prev
+                                })
+                                resetField('pop-up')
+                            }}>
+                                {lng==='uk'?headerText.uk.moreMovies:headerText.en.moreMovies}
                             </div>}
                     </div>
                 </div>

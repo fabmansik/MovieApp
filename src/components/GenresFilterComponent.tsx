@@ -8,7 +8,7 @@ interface IProps{
     genre:IGenre
 }
 export const GenresFilterComponent:FC<PropsWithChildren<IProps>> = ({genre}) => {
-    const {id} = useParams()
+    const {id, search} = useParams()
     const [query, setQuery]= useSearchParams()
     const navigate = useNavigate()
     return (
@@ -18,9 +18,10 @@ export const GenresFilterComponent:FC<PropsWithChildren<IProps>> = ({genre}) => 
                 setQuery(prev =>{
                     prev.set('with_genres', `${genre.id}`)
                     prev.set('page','1')
+                    prev.delete('query')
                     return prev
                 })
-                if(id){
+                if(id||search){
                     navigate(`/?${query.toString()}`)
                 }
             }}

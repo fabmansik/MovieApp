@@ -11,6 +11,9 @@ header.dark{
     text-decoration: none;
     color:white;
 }
+.find-more:hover{
+    background-color: #202121;
+}
 .low-header.dark{
     background-color: #0a0a0a;
     transition: 1s;
