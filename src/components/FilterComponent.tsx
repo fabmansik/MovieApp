@@ -7,7 +7,6 @@ const FilterComponent = () => {
     const dispatch = useAppDispatch()
     const {lng} = useAppSelector(state => state.params)
     const [query, setQuery] = useSearchParams()
-    console.log(query.get('sort_by'))
     return (
         <>
             {query.get('sort_by')!=='primary_release_date.desc'&&<p

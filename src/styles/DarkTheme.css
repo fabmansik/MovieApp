@@ -7,9 +7,50 @@ header.dark{
     background-color: #0f0f0f;
     transition: 1s;
 }
+.movie-page.dark .similar-list a:hover{
+    text-decoration: none;
+    color:white;
+}
 .low-header.dark{
     background-color: #0a0a0a;
     transition: 1s;
+}
+.low-header.dark button{
+    background-color: #0a0a0a;
+    transition: 1s;
+}
+.low-header.dark button:hover{
+    background-color: #202121;
+    transition: 1s;
+}
+.movie-page.dark .genre-names.disabled{
+    background-color: #202121;
+    transition: 1s;
+    color: #8a8a8a;
+}
+.low-header.dark .language{
+    background-color: #0a0a0a;
+    transition: 0.2s;
+}
+.low-header.dark .language p:hover{
+    background-color: #202121;
+    transition: 1s;
+}
+.low-header.dark .genres p:hover{
+    background-color: #202121;
+    transition: 0.2s;
+}
+.low-header.dark .filter p:hover{
+    background-color: #202121;
+    transition: 1s;
+}
+.low-header.dark .genres{
+    background-color: #0a0a0a;
+    transition: 0.2s;
+}
+.low-header.dark .filter{
+    background-color: #0a0a0a;
+    transition: 0.2s;
 }
 .menu-img.dark{
     background-color: #202121;
@@ -87,8 +128,12 @@ header.dark{
     border-bottom: 1px solid #202121;
     transition: 1s;
 }
-.pop-up-menu.shown.dark .find-element:hover{
+.pop-up-menu.dark .find-element:hover{
     background-color: #202121;
     transition: 1s;
+}
+.person-info.dark{
+    box-shadow: 0 0 0 0 transparent;
+    background-color: #2e2e2e;
 }
 

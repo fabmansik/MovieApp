@@ -15,7 +15,9 @@ html{
   background-color: #F0EFEE;
   scroll-behavior: smooth;
 }
+.find-element.dark{
 
+}
 .filter-button{
   width: fit-content;
   background-color: #f5f4f2;
@@ -31,6 +33,21 @@ html{
   height: 0;
   overflow: hidden;
   position: absolute;
+  transition: 0.2s;
+}
+.person-info{
+  display: flex;
+  margin: 0 15% 5% 15%;
+  background-color: white;
+  box-shadow: 0 0 7px 1px #757575;
+  color: #8a8a8a;
+  transition: 1s;
+}
+.person-info h1{
+  margin: 20px;
+}
+.person-info img{
+  width: 23%;
 }
 .filter p{
   height: 32px;
@@ -44,7 +61,8 @@ html{
 }
 .filter.shown{
   top: 100px;
-  height: fit-content;
+  height: 64px;
+  max-height: fit-content;
   width: fit-content;
   flex-direction: column;
   align-items: center;
@@ -52,13 +70,20 @@ html{
   overflow: hidden;
   position: absolute;
   background-color:#FFFFFF;
+  transition: 0.2s;
 }
 .genres.hidden{
-  background-color: transparent;
   height: 0;
   overflow: hidden;
   position: absolute;
-
+  transition: 0.2s;
+  width: 70%;
+  top: 100px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  flex-wrap: wrap;
+  background-color:#FFFFFF;
 }
 
 .genres p{
@@ -69,7 +94,7 @@ html{
 }
 .genres.shown{
   top: 100px;
-  height: fit-content;
+  height: 160px;
   width: 70%;
   display: flex;
   align-items: center;
@@ -78,11 +103,13 @@ html{
   position: absolute;
   background-color:#FFFFFF;
   padding: 0 20px;
+  transition: 0.2s;
 }
 .language.hidden{
   height: 0;
   overflow: hidden;
   position: absolute;
+  transition: 0.2s;
 }
 .language.shown{
   display: flex;
@@ -94,7 +121,8 @@ html{
   overflow: hidden;
   position: absolute;
   background-color:#FFFFFF;
-  left: 15%;
+  transition: 0.2s;
+
 }
 .language p{
   display: flex;
@@ -118,11 +146,11 @@ html{
   cursor: pointer;
 }
 .genres-language-filter .genre-names{
-  margin: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: 0.5s;
+  height: 32px;
 }
 .genre-names.disabled:hover{
   cursor: default;
@@ -260,7 +288,26 @@ header{
   left: 100%;
   transition: 0.6s;
   overflow: hidden;
-  max-height: 704px;
+  max-height: fit-content;
+}
+.pop-up-menu.hidden .find-more{
+  height: 0;
+  transition: 1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pop-up-menu.shown .find-more{
+  height: 59px;
+  transition: 1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.find-more:hover{
+  cursor:pointer;
+  background-color: lightgray;
+  transition: 0.5s;
 }
 .pop-up-menu.shown{
   background-color: #FFFFFF;
@@ -270,7 +317,7 @@ header{
   left: 15%;
   transition: 0.6s;
   overflow: hidden;
-  max-height: 704px;
+  max-height: fit-content;
 }
 .pop-up-menu ::-webkit-scrollbar {
   display: none;
@@ -407,10 +454,9 @@ footer{
 }
 .search input{
   height: 100%;
-  width: 150px;
+  width: 125px;
   transition: 1s;
   padding-left: 10px;
-  padding-right: 15%;
   border: 0;
   background-color: #f5f4f2;
 }
@@ -503,7 +549,12 @@ footer{
   z-index: 1;
   box-shadow: 0 0 7px 1px #757575;
   transition: 1s;
-
+}
+.movie-card .movie-badges span{
+  z-index: 0
+}
+.genre-link{
+  display: flex;
 }
 .movie-card:hover{
   cursor: pointer;
@@ -582,7 +633,7 @@ footer{
     left: 100%;
     transition: 0.6s;
     overflow: hidden;
-    max-height: 704px;
+    max-height: fit-content;
   }
   .pop-up-menu.shown{
     background-color: #FFFFFF;
@@ -592,10 +643,18 @@ footer{
     left: 15%;
     transition: 0.6s;
     overflow: hidden;
-    max-height: 704px;
+    max-height: fit-content;
   }
 }
 @media screen and (max-width: 1000px)  {
+  .low-header{
+    font-size: 13px;
+  }
+
+  .search input{
+    width: 100px;
+    transition: 1s;
+  }
   .movie-info{
     padding: 10px;
   }
@@ -632,7 +691,6 @@ footer{
   }
 
   .pop-up-menu.hidden{
-
     background-color: #FFFFFF;
     position: absolute;
     width: 70%;
@@ -640,7 +698,7 @@ footer{
     left: 100%;
     transition: 0.6s;
     overflow: hidden;
-    max-height: 704px;
+    max-height: fit-content;
     font-size: 13px;
   }
   .pop-up-menu.shown{
@@ -651,17 +709,51 @@ footer{
     left: 15%;
     transition: 0.6s;
     overflow: hidden;
-    max-height: 704px;
+    max-height: fit-content;
     font-size: 13px;
   }
 }
 @media screen and (max-width: 750px) {
   .search{
-    width: 49px;
+    width: 100%;
     min-width: 49px;
-    height: 35px;
     display: flex;
     justify-content: center;
+  }
+  .low-header{
+    display: flex;
+    flex-direction: column;
+    padding: 0 10%;
+  }
+  .low-header .genres-language-filter{
+    width: 100%;
+    justify-content: space-between;
+  }
+  .top-header{
+    justify-content: space-around;
+    padding: 0;
+  }
+  .account{
+    width: fit-content;
+  }
+  .menu-img{
+    margin: 0;
+  }
+  .genres .genre-names{
+    width: 50%;
+  }
+  .genres.shown{
+    width: 80%;
+  }
+  .genres.hidden{
+    width: 80%;
+    height: 0;
+  }
+  .genres-language-filter .genres{
+    height: 320px;
+  }
+  .genres-language-filter .genres.hidden{
+    height: 0;
   }
   .shape-img{
     width: 22px;
@@ -707,33 +799,32 @@ footer{
     text-align: center;
     font-size: 15px;
   }
-  .pop-up-menu{
-    height: 0;
+  .pop-up-menu.shown{
     background-color: #FFFFFF;
     position: absolute;
-    width: 100vw;
-    top: 100px;
+    width: 100%;
+    top: 132px;
+    left: 0;
     transition: 0.6s;
     overflow: hidden;
-    left: 0;
+    max-height: fit-content;
+    font-size: 13px;
   }
-  .search{
-    position: static;
-  }
-  .search input{
+  .pop-up-menu.hidden{
+    background-color: #FFFFFF;
     position: absolute;
     width: 100%;
-    left:0;
-    right:0;
-    height: fit-content;
-    border-radius: 0;
+    top: 132px;
+    left: 100%;
+    transition: 0.6s;
+    overflow: hidden;
+    max-height: fit-content;
+    font-size: 13px;
   }
-  .search input.hidden{
-    top: -30px;
+  .search input{
+    position: static;
   }
-  .search input.shown{
-    top: 100px;
-  }
+
   .small-search{
     height: 35px;
     width: 100%;

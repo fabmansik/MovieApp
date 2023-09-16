@@ -21,11 +21,9 @@ export const ApiServices = {
     AxiosGetMovies : (page:string) : IRes<IMovieResponse<IMovieList[]>> =>{
         return axios.get(`https://api.themoviedb.org/3/discover/movie?${page}`,options)
     },
-
     AxiosGetGenres: (lng:string) : IRes<{genres:IGenre[]}>=>{
         return axios.get(`https://api.themoviedb.org/3/genre/movie/list?language=${lng}`, options)
     },
-
     AxiosSearchMovie: (search:string, setMovies:React.Dispatch<React.SetStateAction<IMovieList[]>>, query:string)  =>{
         axios.get(`https://api.themoviedb.org/3/search/movie?query=${search}&language=${query}`,options).then(res=>setMovies(res.data.results))
     },

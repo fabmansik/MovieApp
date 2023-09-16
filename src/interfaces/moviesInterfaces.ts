@@ -122,5 +122,5 @@ export interface ICrew{
     credit_id: string
     department: string
     job: string
-
+    order?: number
 }
