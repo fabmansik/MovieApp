@@ -8,9 +8,21 @@ const FilterComponent = () => {
     const {lng} = useAppSelector(state => state.params)
     const [query, setQuery] = useSearchParams()
     const navigate = useNavigate()
+    const filterText = {
+        en: {
+            popularity: 'Popularity',
+            release: 'Release Date',
+            average: 'Average Vote'
+        },
+        uk: {
+            popularity: 'Популярність',
+            release: 'Дата Релізу',
+            average: 'Середня оцінка'
+        }
+    }
     return (
         <>
-            {query.get('sort_by')!=='primary_release_date.desc'&&<p
+            {query.get('sort_by') !== 'primary_release_date.desc' && <p
                 onClick={() => {
                     setQuery(prev => {
                         prev.set('sort_by', `primary_release_date.desc`)
@@ -19,9 +31,9 @@ const FilterComponent = () => {
                     })
                     navigate(`/?${query.toString()}`)
                 }}>
-                Release Date
+                {lng==='uk'?filterText.uk.release:filterText.en.release}
             </p>}
-            {query.get('sort_by')!=='vote_average.desc'&&<p
+            {query.get('sort_by') !== 'vote_average.desc' && <p
                 onClick={() => {
                     setQuery(prev => {
                         prev.set('sort_by', `vote_average.desc`)
@@ -30,9 +42,9 @@ const FilterComponent = () => {
                     })
                     navigate(`/?${query.toString()}`)
                 }}>
-                Average Vote
+                {lng==='uk'?filterText.uk.average:filterText.en.average}
             </p>}
-            {(query.get('sort_by')!==(''||'popularity.desc')&&query.get('sort_by'))&&<p
+            {(query.get('sort_by') !== ('' || 'popularity.desc') && query.get('sort_by')) && <p
                 onClick={() => {
                     setQuery(prev => {
                         prev.set('sort_by', `popularity.desc`)
@@ -41,7 +53,7 @@ const FilterComponent = () => {
                     })
                     navigate(`/?${query.toString()}`)
                 }}>
-                Popularity
+                {lng==='uk'?filterText.uk.popularity:filterText.en.popularity}
             </p>}
         </>
     );

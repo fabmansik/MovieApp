@@ -19,11 +19,21 @@ export const HeaderComponent = () => {
     const headerText = {
         en: {
             genrePop: 'All Genres',
-            moreMovies: 'More Movies...'
+            moreMovies: 'More Movies...',
+            filter:{
+                popularity:'Popularity',
+                release:'Release Date',
+                average:'Average Vote'
+            }
         },
         uk: {
             genrePop: 'Всі жанри',
-            moreMovies: 'Більше фільмів...'
+            moreMovies: 'Більше фільмів...',
+            filter:{
+                popularity:'Популярність',
+                release:'Дата Релізу',
+                average:'Середня оцінка'
+            }
         }
     }
     const dispatch = useAppDispatch()
@@ -162,9 +172,9 @@ export const HeaderComponent = () => {
                                         setShowFilter('hidden')
                                     }, 300)
                                 }}>
-                            {querry.get('sort_by') === '' ? 'Popularity' :
-                            querry.get('sort_by') === 'primary_release_date.desc' ? 'Release Date' :
-                                querry.get('sort_by') === 'vote_average.desc' ? 'Average Vote' : 'Popularity'}
+                            {querry.get('sort_by') === '' ? `${lng==='uk'?headerText.uk.filter.popularity:headerText.en.filter.popularity}` :
+                            querry.get('sort_by') === 'primary_release_date.desc' ? `${lng==='uk'?headerText.uk.filter.release:headerText.en.filter.release}` :
+                                querry.get('sort_by') === 'vote_average.desc' ? `${lng==='uk'?headerText.uk.filter.average:headerText.en.filter.average}` : `${lng==='uk'?headerText.uk.filter.popularity:headerText.en.filter.popularity}`}
                         </button>
                         <div className={`filter ${showFilter}`}>
                             <FilterComponent/>
