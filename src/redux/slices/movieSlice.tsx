@@ -21,6 +21,7 @@ export interface IMovieState{
     actor: ICast
     producer: ICrew
     searchPage: IMovieResponse<IMovieList[]>
+    favourite: number[]
 }
 const initialState:IMovieState = {
     moviePage:{
@@ -45,7 +46,8 @@ const initialState:IMovieState = {
         results: [],
         total_pages: null,
         total_results: null
-    }
+    },
+    favourite:[]
 }
 const getMovies = createAsyncThunk<IMovieResponse<IMovieList[]>, string>(
     'movieSlice/getMovies',
@@ -159,6 +161,25 @@ const movieSlice = createSlice({
         },
         clearSearchPage: (state)=>{
             state.searchPage = initialState.searchPage
+        },
+        getFavourite: (state)=>{
+            const fav = localStorage.getItem('favourite')
+            if(fav){
+                state.favourite=JSON.parse(fav)
+            } else {
+                localStorage.setItem('favourite','')
+            }
+        },
+        addFavourite: (state, action) => {
+            const alreadyIN = state.favourite.find(element=>element===action.payload)
+            if(alreadyIN){
+                const newState = state.favourite.filter(element=>element!==alreadyIN)
+                localStorage.setItem('favourite',JSON.stringify(newState))
+                state.favourite = newState
+            }else{
+                localStorage.setItem('favourite',JSON.stringify([...state.favourite, action.payload]))
+                state.favourite = [...state.favourite, action.payload]
+            }
         }
     },
     extraReducers: builder => builder

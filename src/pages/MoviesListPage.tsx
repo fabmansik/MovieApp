@@ -12,11 +12,11 @@ import QueryComponent from "../components/QueryComponent";
 
 export const MoviesListPage = () => {
 
-    const {moviePage, searchPage} = useAppSelector(state => state.movies)
+    const {moviePage, searchPage, favourite} = useAppSelector(state => state.movies)
 
     const {lng} = useAppSelector(state => state.params)
     const dispatch = useAppDispatch()
-    const [querry, setQuerry] = useSearchParams()
+    const [querry] = useSearchParams()
     const queryProducer = querry.get('with_crew')
     const queryActor = querry.get('with_cast')
     const queryQuery = querry.get('query')
@@ -28,7 +28,10 @@ export const MoviesListPage = () => {
         }else{
             dispatch(movieActions.getMovies(querry.toString()))
         }
-
+        if(pathname==='/favourite'){
+            di
+        }
+        dispatch(movieActions.getFavourite())
         // ApiServices.AxiosGetMoviesExactPage(setMoviesList, setGetInfo, page.page))
         dispatch(movieActions.getGenres(lng||querry.get('language')))
         if(!queryProducer){

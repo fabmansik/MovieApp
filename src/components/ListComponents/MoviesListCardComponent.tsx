@@ -16,7 +16,7 @@ export const MoviesListCardComponent:FC<PropsWithChildren<IProps>> = ({movie}) =
     return(
         <Link to={`/${id}?${querry}`} preventScrollReset={false}>
             <div className='movie-card'>
-                <PosterPreviewComponent poster={poster_path}/>
+                <PosterPreviewComponent poster={poster_path} id={id}/>
                 <MovieInfoComponent movie={movie}/>
                 <div className='movie-rating'>
                     <StarsRatingComponent vote_average={vote_average} size={between? 'small': smallerThan750? 'large' : 'medium'}/>

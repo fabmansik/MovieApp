@@ -20,20 +20,22 @@ export const HeaderComponent = () => {
         en: {
             genrePop: 'All Genres',
             moreMovies: 'More Movies...',
-            filter:{
-                popularity:'Popularity',
-                release:'Release Date',
-                average:'Average Vote'
-            }
+            filter: {
+                popularity: 'Popularity',
+                release: 'Release Date',
+                average: 'Average Vote'
+            },
+            favourite: 'Favourite'
         },
         uk: {
             genrePop: 'Всі жанри',
             moreMovies: 'Більше фільмів...',
-            filter:{
-                popularity:'Популярність',
-                release:'Дата Релізу',
-                average:'Середня оцінка'
-            }
+            filter: {
+                popularity: 'Популярність',
+                release: 'Дата Релізу',
+                average: 'Середня оцінка'
+            },
+            favourite: 'Улюблені'
         }
     }
     const dispatch = useAppDispatch()
@@ -68,7 +70,7 @@ export const HeaderComponent = () => {
         } else {
             setShowGenrePop(true)
         }
-        if(!querry.get('query')){
+        if (!querry.get('query')) {
             dispatch(movieActions.clearSearchPage())
             resetField('pop-up')
         }
@@ -172,13 +174,22 @@ export const HeaderComponent = () => {
                                         setShowFilter('hidden')
                                     }, 300)
                                 }}>
-                            {querry.get('sort_by') === '' ? `${lng==='uk'?headerText.uk.filter.popularity:headerText.en.filter.popularity}` :
-                            querry.get('sort_by') === 'primary_release_date.desc' ? `${lng==='uk'?headerText.uk.filter.release:headerText.en.filter.release}` :
-                                querry.get('sort_by') === 'vote_average.desc' ? `${lng==='uk'?headerText.uk.filter.average:headerText.en.filter.average}` : `${lng==='uk'?headerText.uk.filter.popularity:headerText.en.filter.popularity}`}
+                            {querry.get('sort_by') === '' ? `${lng === 'uk' ? headerText.uk.filter.popularity : headerText.en.filter.popularity}` :
+                                querry.get('sort_by') === 'primary_release_date.desc' ? `${lng === 'uk' ? headerText.uk.filter.release : headerText.en.filter.release}` :
+                                    querry.get('sort_by') === 'vote_average.desc' ? `${lng === 'uk' ? headerText.uk.filter.average : headerText.en.filter.average}` : `${lng === 'uk' ? headerText.uk.filter.popularity : headerText.en.filter.popularity}`}
                         </button>
                         <div className={`filter ${showFilter}`}>
                             <FilterComponent/>
                         </div>
+                    </div>
+                    <div className={`favourite-div`}>
+                        <button
+                            className={`favourite-button`}
+                            onClick={()=> {
+                                navigate('/favourite')
+                            }}>
+                            {lng === 'uk' ? headerText.uk.favourite : headerText.en.favourite}
+                        </button>
                     </div>
 
                 </div>
@@ -197,7 +208,7 @@ export const HeaderComponent = () => {
 
                         {searchMovies?.slice(0, 10).map(element =>
                             <Link className={`x`}
-                                  onClick={()=> {
+                                  onClick={() => {
                                       setQuery(prev => {
                                           prev.delete('query')
                                           return prev
@@ -233,7 +244,7 @@ export const HeaderComponent = () => {
                                 })
                                 resetField('pop-up')
                             }}>
-                                {lng==='uk'?headerText.uk.moreMovies:headerText.en.moreMovies}
+                                {lng === 'uk' ? headerText.uk.moreMovies : headerText.en.moreMovies}
                             </div>}
                     </div>
                 </div>
