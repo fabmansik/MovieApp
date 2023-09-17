@@ -1,8 +1,7 @@
 import {GenreBadgeComponent} from "./GenreBadgeComponent";
-import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
+import { useAppSelector} from "../../Hooks/reduxHooks";
 import {FC, PropsWithChildren} from "react";
 import {IGenre, IMovieList} from "../../interfaces/moviesInterfaces";
-import {movieActions} from "../../redux/slices/movieSlice";
 interface IProps{
     movie:IMovieList
 }

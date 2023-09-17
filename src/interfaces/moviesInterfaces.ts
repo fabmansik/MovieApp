@@ -63,7 +63,7 @@ export interface IMovieInfo {
     poster_path: string
     production_companies: ICompanies[]
     production_countries: ICountries[],
-    release_date: number
+    release_date: string
     revenue: number
     runtime: number
     spoken_languages: ILanguages[]

@@ -1,9 +1,6 @@
 import React, {FC, PropsWithChildren} from 'react';
 import {IGenre} from "../interfaces/moviesInterfaces";
 import {useNavigate, useParams, useSearchParams} from "react-router-dom";
-import {set} from "react-hook-form";
-import {useAppDispatch} from "../Hooks/reduxHooks";
-import {paramsActions} from "../redux/slices/paramsSlice";
 interface IProps{
     genre:IGenre
 }

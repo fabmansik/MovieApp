@@ -1,7 +1,7 @@
 import {FC, PropsWithChildren} from "react";
 import {Link, useLocation, useSearchParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
-import {movieActions} from "../../redux/slices/movieSlice";
+import {favouriteActions} from "../../redux/slices/favouriteSlice";
 interface IProps{
     poster:string
     id:number
@@ -10,7 +10,7 @@ export const PosterPreviewComponent:FC<PropsWithChildren<IProps>> = ({poster,id}
     const {pathname} = useLocation()
     const [query]=useSearchParams()
     const dispatch = useAppDispatch()
-    const {favourite} = useAppSelector(state => state.movies)
+    const {favourite} = useAppSelector(state => state.favourites)
     const isFavorite = favourite.find(element=> element===id)
     return(
         <div className='poster-div'>
@@ -25,7 +25,7 @@ export const PosterPreviewComponent:FC<PropsWithChildren<IProps>> = ({poster,id}
                 <div
                     id={`heart`}
                     className={isFavorite?`active`:`none-active`}
-                    onClick={()=>dispatch(movieActions.addFavourite(id))}
+                    onClick={()=>dispatch(favouriteActions.addFavourite(id))}
                 ></div>
             </Link>
 

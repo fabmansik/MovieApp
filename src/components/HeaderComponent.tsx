@@ -43,11 +43,10 @@ export const HeaderComponent = () => {
     const navigate = useNavigate()
     const [querry, setQuery] = useSearchParams()
     const {register, resetField, watch} = useForm()
-    const {theme, lng, smallerThan750} = useAppSelector(state => state.params)
-    const {genres, searchPage} = useAppSelector(state => state.movies)
+    const {theme, lng} = useAppSelector(state => state.params)
+    const {genres} = useAppSelector(state => state.movies)
     const parsed = qs.parse(querry.toString())
     const [showPop, setShowPop] = useState<string>('hidden')
-    // const [searchMovies, setSearchMovies] = useState<IMovieList[]>([])
     const [showGenres, setShowGenres] = useState<string>('hidden')
     const [showLanguage, setShowLanguage] = useState<string>('hidden')
     const [showFilter, setShowFilter] = useState<string>('hidden')
@@ -57,11 +56,6 @@ export const HeaderComponent = () => {
 
     useEffect(() => {
         dispatch(paramsActions.getTheme())
-        // dispatch(movieActions.searchMovies(qs.stringify({
-        //     ...parsed,
-        //     page: '1',
-        //     query: watchPop
-        // })))
         ApiServices.AxiosSearchPop(watchPop || '', setSearchMovies, lng)
     }, [watchPop])
     useEffect(() => {
@@ -76,7 +70,6 @@ export const HeaderComponent = () => {
         }
     }, [querry.toString()])
 
-    console.log(querry.delete('query'));
     return (
         <header className={theme}>
             <div className={`top-header ${theme}`}>
@@ -186,7 +179,7 @@ export const HeaderComponent = () => {
                         <button
                             className={`favourite-button`}
                             onClick={()=> {
-                                navigate('/favourite')
+                                navigate(`/favourite?${querry.toString()}`)
                             }}>
                             {lng === 'uk' ? headerText.uk.favourite : headerText.en.favourite}
                         </button>

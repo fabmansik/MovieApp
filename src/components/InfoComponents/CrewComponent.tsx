@@ -1,6 +1,5 @@
 import React, {FC, PropsWithChildren, useState} from 'react';
-import {ICast, ICrew} from "../../interfaces/moviesInterfaces";
-import {set} from "react-hook-form";
+import {ICrew} from "../../interfaces/moviesInterfaces";
 import {useAppDispatch, useAppSelector} from "../../Hooks/reduxHooks";
 import {movieActions} from "../../redux/slices/movieSlice";
 import {useNavigate} from "react-router-dom";

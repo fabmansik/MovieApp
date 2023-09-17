@@ -1,4 +1,4 @@
-import axios, {AxiosPromise, AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios";
 import React from "react";
 import {
     ICredits,
@@ -6,16 +6,9 @@ import {
     IMovieInfo,
     IMovieList,
     IMovieResponse,
-    IVideo,
     IVideoRes
 } from "../interfaces/moviesInterfaces";
-// const options = {
-//     method: 'GET',
-//     headers: {
-//         accept: 'application/json',
-//         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNmJmYTJmNTM3ODE2MGFiYzgyZmZjOTFmNGE3NmMzNyIsInN1YiI6IjY0YzBjMGUzMTNhMzIwMDBmZmJlOTM0YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.k4ETxPln5NDQw-GcIRzba3N_fwgLRxTEUu22k6S_88Y'
-//     }
-// }
+
 export const baseURL = process.env.REACT_APP_API
 
 export const apiService = axios.create({baseURL})

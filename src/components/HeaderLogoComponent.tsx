@@ -4,16 +4,18 @@ import qs from "qs";
 import {useAppSelector} from "../Hooks/reduxHooks";
 
 const HeaderLogoComponent = () => {
-    const [querry, setQuerry] = useSearchParams()
+    const [querry] = useSearchParams()
     const {lng, theme} = useAppSelector(state => state.params)
     const {pathname} = useLocation()
     const params = useParams()
-
     const parsed = qs.parse(querry.toString())
     return (
         <div className='header-imgs'>
 
             <Link to={
+                params.id && pathname.includes('/favourite')?
+                    `/favourite?${querry.toString()}`
+                    :
                 params.id && querry.get('query')?
                     `/search?${querry.toString()}`
                     :

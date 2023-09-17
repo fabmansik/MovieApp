@@ -1,5 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {AxiosError} from "axios/index";
+import {createSlice} from "@reduxjs/toolkit";
 import {useMediaPredicate} from "react-media-hook";
 export interface IState{
     theme:string

@@ -1,4 +1,3 @@
-//@ts-ignore
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import './styles/MovieInfoPage.css'
@@ -10,6 +9,7 @@ import {MovieInfoPage} from "./pages/MovieInfoPage";
 import store from "./redux/store";
 import React from "react";
 import {Provider} from "react-redux";
+import FavouritesPage from "./pages/FavouritesPage";
 
 const AppLayout = () => (
     <>
@@ -32,8 +32,12 @@ const router = createBrowserRouter([
             },
             {
                 path: '/favourite',
-                element: <MoviesListPage/>,
+                element: <FavouritesPage/>,
                 children: []
+            },
+            {
+                path: '/favourite/:id',
+                element: <MovieInfoPage/>
             },
             {
                 path: '/:id',

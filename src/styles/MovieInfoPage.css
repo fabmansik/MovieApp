@@ -123,9 +123,13 @@
     left: auto;
     z-index: 1;
     height: fit-content;
+    position: relative;
 }
 .movie-all img{
     width: 100%;
+}
+#heart:hover{
+    cursor: pointer;
 }
 .movie-all-info{
     display: flex;

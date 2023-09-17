@@ -6,7 +6,7 @@ const QueryComponent = () => {
     const queryText = {
         en:`Found by request:`,uk:`Знайдено по запиту:`
     }
-    const [query, setQuery]=useSearchParams()
+    const [query]=useSearchParams()
     const {lng} = useAppSelector(state => state.params)
     return (
         <div className={'query-div'}>

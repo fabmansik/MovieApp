@@ -1,5 +1,5 @@
 import {Outlet, useSearchParams} from "react-router-dom";
-import React, {createContext, useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {HeaderComponent} from "../components/HeaderComponent";
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
 import {paramsActions} from "../redux/slices/paramsSlice";

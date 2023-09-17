@@ -1,9 +1,8 @@
 import {Badge} from "reactstrap";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import React, {FC, PropsWithChildren, useContext, useState} from "react";
+import React, {FC, PropsWithChildren, useState} from "react";
 import {useAppSelector} from "../../Hooks/reduxHooks";
-import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
-import qs from "qs";
+import {Link} from "react-router-dom";
 import {IGenre} from "../../interfaces/moviesInterfaces";
 
 interface IProps {
@@ -13,7 +12,6 @@ interface IProps {
 export const GenreBadgeComponent: FC<PropsWithChildren<IProps>> = ({badge}) => {
     const {theme, lng} = useAppSelector(state => state.params)
     const [hoverColor, setHoverColor] = useState(false)
-    const [quer, setQuery] = useSearchParams()
     return (
         <Link to={`/?language=${lng}&with_genres=${badge.id}`} className={'genre-link'}>
             <Badge

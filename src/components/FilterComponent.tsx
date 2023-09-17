@@ -1,10 +1,8 @@
 import React from 'react';
-import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
+import { useAppSelector} from "../Hooks/reduxHooks";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {paramsActions} from "../redux/slices/paramsSlice";
 
 const FilterComponent = () => {
-    const dispatch = useAppDispatch()
     const {lng} = useAppSelector(state => state.params)
     const [query, setQuery] = useSearchParams()
     const navigate = useNavigate()

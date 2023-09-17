@@ -1,14 +1,14 @@
-import {Link, ScrollRestoration, useLocation, useParams} from 'react-router-dom';
-import {StarsRatingComponent} from "../components/ListComponents/StarsRatingComponent";
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {ApiServices} from "../services/ApiServices";
+import {Link, ScrollRestoration, useLocation, useParams, useSearchParams} from 'react-router-dom';
+import {StarsRatingComponent} from "../components";
+import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
-import {ICrew, IGenre, IMovieList} from "../interfaces/moviesInterfaces";
+import {ICrew} from "../interfaces/moviesInterfaces";
 import {movieActions} from "../redux/slices/movieSlice";
 import ActorsComponent from "../components/InfoComponents/ActorsComponent";
 import SimilarMovieComponent from "../components/InfoComponents/SimilarMovieComponent";
 import {GenreBadgeComponent} from "../components";
 import CrewComponent from "../components/InfoComponents/CrewComponent";
+import {favouriteActions} from "../redux/slices/favouriteSlice";
 
 export const MovieInfoPage = () => {
     const movieInfoPattern = {
@@ -62,18 +62,20 @@ export const MovieInfoPage = () => {
         }
     }
     const dispatch = useAppDispatch()
+    const {favourite} = useAppSelector(state => state.favourites)
 
     const {currentMovie, videos, credits, similar} = useAppSelector(state => state.movies)
     const {lng} = useAppSelector(state => state.params)
     const params: { id?: number } = useParams()
-    console.log(params)
+    const isFavorite = favourite.find(element=> element===+params.id)
     let keyYT
     if (videos.length !== 0) {
         const video = videos.find(element => element.type === 'Trailer' || element.type === 'Teaser')
         video?.key ? keyYT = video.key : keyYT = null
     }
     const genresRedux = useAppSelector(state => state.movies.genres)
-
+    const {pathname} = useLocation()
+    const [query]=useSearchParams()
     useEffect(() => {
         dispatch(movieActions.getSimilar({id: params.id, lng: lng}))
         dispatch(movieActions.getMovieById({id: params.id, options: lng}))
@@ -106,6 +108,12 @@ export const MovieInfoPage = () => {
                         <div className='movie-all-poster'>
                             <img src={`https://image.tmdb.org/t/p/w500/${currentMovie.poster_path}`}
                                  alt={'poster-img'}/>
+                                <div
+                                    id={`heart`}
+                                    className={isFavorite?`active`:`none-active`}
+                                    onClick={()=>dispatch(favouriteActions.addFavourite(+params.id))}
+                                ></div>
+
                         </div>
                         <div className='movie-all-details'>
                             <div className='movie-all-ratings'>
