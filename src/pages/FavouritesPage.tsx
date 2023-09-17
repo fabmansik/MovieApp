@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {MoviesListCardComponent} from "../components";
 import PaginationComponent from "../components/ListComponents/PaginationComponent";
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
-import {useSearchParams} from "react-router-dom";
+import {ScrollRestoration, useSearchParams} from "react-router-dom";
 import {favouriteActions} from "../redux/slices/favouriteSlice";
 import {movieActions} from "../redux/slices/movieSlice";
 
@@ -32,6 +32,7 @@ const FavouritesPage = () => {
     }, [favourite, lng])
     return (
         <>
+            <ScrollRestoration/>
             {favourite.length === 0&&
                 <div className={`no-favs`}>
                     <h1>
