@@ -689,6 +689,11 @@ footer {
     right: 15%;
     color: #8a8a8a;
 }
+.favs{
+
+    margin: 0 15% 20px;
+    color: #8a8a8a;
+}
 
 .favourite-div button{
     background-color: #f5f4f2;
@@ -912,7 +917,7 @@ footer {
     .low-header {
         display: flex;
         flex-direction: column;
-        padding: 0 10%;
+        padding: 0 5%;
     }
 
     .low-header .genres-language-filter {
@@ -948,6 +953,7 @@ footer {
 
     .genres-language-filter .genres {
         height: 320px;
+        left:10%
     }
 
     .genres-language-filter .genres.hidden {

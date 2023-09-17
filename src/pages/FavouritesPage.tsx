@@ -9,10 +9,12 @@ import {movieActions} from "../redux/slices/movieSlice";
 const FavouritesPage = () => {
     const favText = {
         en: {
-            noFav: 'No added favourite movies'
+            noFav: 'No added favourite movies',
+            fav: 'Favourites:',
         },
         uk: {
-            noFav: 'У улюблені нічого не додано'
+            noFav: 'У улюблені нічого не додано',
+            fav: 'Улюблені:',
         }
     }
     const {favourite, results} = useAppSelector(state => state.favourites)
@@ -27,13 +29,19 @@ const FavouritesPage = () => {
     useEffect(() => {
         favourite.map(element => dispatch(favouriteActions.getDetails({id: element, options: lng})))
         dispatch(movieActions.getGenres(lng))
-    }, [favourite])
+    }, [favourite, lng])
     return (
         <>
-            {favourite.length === 0 &&
+            {favourite.length === 0&&
                 <div className={`no-favs`}>
                     <h1>
                         {lng === 'uk' ? favText.uk.noFav : favText.en.noFav}
+                    </h1>
+                </div>}
+            {favourite.length !==0&&
+                <div className={`favs`}>
+                    <h1>
+                        {lng === 'uk' ? favText.uk.fav : favText.en.fav}
                     </h1>
                 </div>}
             <div className='fav-movie-list'>
