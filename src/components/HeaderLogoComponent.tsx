@@ -14,6 +14,9 @@ const HeaderLogoComponent = () => {
         <div className='header-imgs'>
 
             <Link to={
+                params.id && querry.get('query')?
+                    `/search?${querry.toString()}`
+                    :
                 pathname === '/search' && querry.get('page') !== '1' ?
                     `/search?language=${lng}&query=${querry.get('query')}&page=1` :
                     pathname === '/search' ?
