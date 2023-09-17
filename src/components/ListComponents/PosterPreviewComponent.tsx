@@ -21,7 +21,7 @@ export const PosterPreviewComponent:FC<PropsWithChildren<IProps>> = ({poster,id}
                     <img className='poster-img' src={'/No-Image.png'} alt="poster"/>}
 
             </div>
-            <Link to={pathname+`?${query.toString()}`}>
+            <Link to={pathname+`?${query.toString()}`} preventScrollReset={true}>
                 <div
                     id={`heart`}
                     className={isFavorite?`active`:`none-active`}

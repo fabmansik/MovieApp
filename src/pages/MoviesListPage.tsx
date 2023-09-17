@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {MoviesListCardComponent} from "../components";
-import { useLocation,  useSearchParams} from "react-router-dom";
+import {ScrollRestoration, useLocation, useSearchParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../Hooks/reduxHooks";
 import {movieActions} from "../redux/slices/movieSlice";
 import PaginationComponent from "../components/ListComponents/PaginationComponent";
@@ -41,7 +41,7 @@ export const MoviesListPage = () => {
             {queryProducer?<ProducerInfoComponent/>:''}
             {queryActor?<ActorInfoComponent/>:''}
             {queryQuery?<QueryComponent/>:''}
-
+            <ScrollRestoration/>
             <div className='movie-list'>
                 {pathname==='/search'?
                     (searchPage.results !== null ?
